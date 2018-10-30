@@ -5,95 +5,116 @@ import java.util.Date;
  
  public class Comision {
 
-    private int id_liq_comision;
-    private Date fecha_registro;
-    private Date mes_liquidado;
-    private int num_fac_contrato;
-    private String local;
-    private int id_propietario;
-    private double comision;
-    private double val_fact_canon_arrendamiento;
-    private double val_comision;
+    private int idcomision;
+    private Date fecha_reg;
+    private int periodo_comi;
+    private int idcontrato;
+    private int idpropiedad;
+    private int idpropietario;
+    private String observacion;
+    private int porc_comi;
+    private double valor_comi;
+    private double valor_canon;
+    private double valor_propietario;
 
-    public int getId_liq_comision() {
-        return id_liq_comision;
+    public int getIdcomision() {
+        return idcomision;
     }
 
-    public void setId_liq_comision(int id_liq_comision) {
-        this.id_liq_comision = id_liq_comision;
+    public void setIdcomision(int idcomision) {
+        this.idcomision = idcomision;
     }
 
-    public Date getFecha_registro() {
-        return fecha_registro;
+    public Date getFecha_reg() {
+        return fecha_reg;
     }
 
-    public void setFecha_registro(Date fecha_registro) {
-        this.fecha_registro = fecha_registro;
+    public void setFecha_reg(Date fecha_reg) {
+        this.fecha_reg = fecha_reg;
     }
 
-    public Date getMes_liquidado() {
-        return mes_liquidado;
+    public int getPeriodo_comi() {
+        return periodo_comi;
     }
 
-    public void setMes_liquidado(Date mes_liquidado) {
-        this.mes_liquidado = mes_liquidado;
+    public void setPeriodo_comi(int periodo_comi) {
+        this.periodo_comi = periodo_comi;
     }
 
-    public int getNum_fac_contrato() {
-        return num_fac_contrato;
+    public int getIdcontrato() {
+        return idcontrato;
     }
 
-    public void setNum_fac_contrato(int num_fac_contrato) {
-        this.num_fac_contrato = num_fac_contrato;
+    public void setIdcontrato(int idcontrato) {
+        this.idcontrato = idcontrato;
     }
 
-    public String getLocal() {
-        return local;
+    public int getIdpropiedad() {
+        return idpropiedad;
     }
 
-    public void setLocal(String local) {
-        this.local = local;
+    public void setIdpropiedad(int idpropiedad) {
+        this.idpropiedad = idpropiedad;
     }
 
-    public int getId_propietario() {
-        return id_propietario;
+    public int getIdpropietario() {
+        return idpropietario;
     }
 
-    public void setId_propietario(int id_propietario) {
-        this.id_propietario = id_propietario;
+    public void setIdpropietario(int idpropietario) {
+        this.idpropietario = idpropietario;
     }
 
-    public double getComision() {
-        return comision;
+    public String getObservacion() {
+        return observacion;
     }
 
-    public void setComision(double comision) {
-        this.comision = comision;
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
-    public double getVal_fact_canon_arrendamiento() {
-        return val_fact_canon_arrendamiento;
+    public int getPorc_comi() {
+        return porc_comi;
     }
 
-    public void setVal_fact_canon_arrendamiento(double val_fact_canon_arrendamiento) {
-        this.val_fact_canon_arrendamiento = val_fact_canon_arrendamiento;
+    public void setPorc_comi(int porc_comi) {
+        this.porc_comi = porc_comi;
     }
 
-    public double getVal_comision() {
-        return val_comision;
+    public double getValor_comi() {
+        return valor_comi;
     }
 
-    public void setVal_comision(double val_comision) {
-        this.val_comision = val_comision;
+    public void setValor_comi(double valor_comi) {
+        this.valor_comi = valor_comi;
     }
+
+    public double getValor_canon() {
+        return valor_canon;
+    }
+
+    public void setValor_canon(double valor_canon) {
+        this.valor_canon = valor_canon;
+    }
+
+    public double getValor_propietario() {
+        return valor_propietario;
+    }
+
+    public void setValor_propietario(double valor_propietario) {
+        this.valor_propietario = valor_propietario;
+    }
+
     
-     @Override
+    
+    @Override
     public String toString() {
-        return "Liq_comision{" + "id_liq_comision=" + id_liq_comision + ", fecha_registro=" 
-                + fecha_registro + ", mes_liquidado=" + mes_liquidado + ", num_fac_contrato=" 
-                + num_fac_contrato + ", local=" + local + ", id_propietario=" 
-                + id_propietario + ", comision=" + comision + ", val_fact_canon_arrendamiento=" 
-                + val_fact_canon_arrendamiento + ", val_comision=" + val_comision + '}';
+        return "Comision{" + "idcomision=" + idcomision + ", fecha_reg=" 
+                + fecha_reg + ", periodo_comi=" + periodo_comi + ", idcontrato=" 
+                + idcontrato + ", idpropiedad=" + idpropiedad + ", idpropietario=" 
+                + idpropietario + ", observacion=" + observacion + ", porc_comi=" 
+                + porc_comi + ", valor_comi=" + valor_comi + ", valor_canon=" 
+                + valor_canon + ", valor_propietario=" + valor_propietario + '}';
     }
     
     

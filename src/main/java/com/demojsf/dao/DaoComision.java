@@ -10,7 +10,7 @@ import java.util.List;
  * @param <Comision>
  */
 public interface DaoComision<Comision> {
-    void liq_comision(Date fecha_reg,int periodo_comi,int idcontrato,int idpropiedad,int propietario,int porc_comi,double valor_comi,double valor_canon, double valor_propietario,int contrato_ini,int contrato_fin);
+    void liq_comision(int periodo);
     void save(Comision c);
     void update(Comision c);
     void delete(Comision c);

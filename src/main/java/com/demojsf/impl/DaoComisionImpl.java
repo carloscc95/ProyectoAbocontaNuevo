@@ -21,108 +21,45 @@ import javax.faces.context.FacesContext;
 public class DaoComisionImpl implements DaoComision<Comision> {
 
     @Override
-    public void liq_comision(Date fecha_reg,int periodo_comi,int idcontrato,int idpropiedad,int propietario,int porc_comi,double valor_comi,double valor_canon, double valor_propietario,int contrato_ini,int contrato_fin) {
-          
-        //OJO QUITAR ESTE SYSTEM.OUT
-        //System.out.println("OJO!!!!... Si entroooo..... 1");
-        
+    public void liq_comision(int periodo){
+     
         Connection connect = null;
         try {
         
             connect = JdbcConnect.getConnect();
             
-            String filtro="";
-            
-            //Si se coloco algun contrato se guarda un filtro de rango de contratos para aplicar en la consulta de contratos
-            if(contrato_ini!=0)
-                filtro+=" and between(numcontrato, "+contrato_ini+", "+contrato_fin+")";
-            
-            
-            
-            //*************************************************************************************//
-            //*************************************************************************************//
-            //*** Falta implementar filtro de fecha de vencimiento y tambien rango de contratos ***//
-            //*************************************************************************************//
-            //*************************************************************************************//
-            
-            
-            
-            
-            //Buscamos los contratos activos y que la fecha de vencimiento sea menor a la fecha de factura
-            //PreparedStatement pstContratos = connect.prepareStatement("Select numcontrato,idclie,idpropiedad,valor from Contrato where estado=\"Activo\" and fecvenc<="+ fec_factu.getTime() + filtro +" order by 1");
-            PreparedStatement pstContratos = connect.prepareStatement("SELECT com.fecha_reg, com.periodo_comi, c.numcontrato, com.idpropiedad, com.idpropietario, com.porc_comi, com.valor_canon, c.estado "
+            //Buscamos los contratos activos 
+            PreparedStatement pstContratos = connect.prepareStatement("SELECT c.numcontrato, c.idpropiedad, pt.idpropietario, pt.porccomi, c.valor_canon"
                                                                     + "FROM contrato c "
-                                                                    + "inner join comision com on c.numcontrato = com.idcontrato "
-                                                                    + "where c.estado = 'Activo'");
+                                                                    + "inner join propiedad pd on c.idpropiedad = pd.idpropiedad "
+                                                                    + "inner join propietarios pt on  pd.idpropietario = pt.idpropietario "
+                                                                    + "where c.estado = \"Activo\" order by 1");
             ResultSet rsContratos = pstContratos.executeQuery();
             
-            //Preparamos sentncia del insert en la tabla de facturas
-            PreparedStatement 
-                pstInsertar_Comision = connect.prepareStatement("Insert into Comision (fecha_reg,periodo_comi,idcontrato,idpropiedad,"
+            //Preparamos sentncia del insert en la tabla de Comision
+            PreparedStatement pstInsertar_Comision = connect.prepareStatement("Insert into Comision (fecha_reg,periodo_comi,idcontrato,idpropiedad,"
                         + "idpropietario,observacion,porc_comi,valor_comi,valor_canon,valor_propietario) values(?,?,?,?,?,?,?,?,?,?)");
-            
-            
-            
-            //OJO QUITAR ESTE SYSTEM.OUT
-            //System.out.println("OJO!!!!... Si entroooo..... 2");
-            
-            
-        
             try{
-                
-                //Buscamos la informacion de la tabla config
-                PreparedStatement pstConfig = connect.prepareStatement("Select num_cons_fact,prefijo_dian,resolu_dian,factura_dian from config");
-                ResultSet rsConfig = pstConfig.executeQuery();
-                /*
-                    //---->Se inicializan las variables de configuracion
-                int consecutivo_fact=0;
-                String prefijo="";
-                String resolucion="";
-                String rango_factu="";
-                    //---->Se asignan los valores traidos de la tabla config a las variables inicializadas        
-                while (rsConfig.next()) {
-                    consecutivo_fact=rsConfig.getInt(1);
-                    prefijo=rsConfig.getString(2);
-                    resolucion=rsConfig.getString(3);
-                    rango_factu=rsConfig.getString(4);
-                */
-                }
-                //Fin busqueda de la tabla de config
-                
                 connect.setAutoCommit(false);
 
- 
-                //OJO QUITAR ESTE SYSTEM.OUT
-                //System.out.println("OJO!!!!... Si entroooo..... 3");
-                
-                
-                //Comenzamos ciclo de los contratos activos y con fecha de venc menores de la fecha de facturacion
+                //Comenzamos ciclo de los contratos activos
                 while (rsContratos.next()) {
-                    
-                    //System.out.println("Si entro cicloCONTRATOS..... "+consecutivo_fact);
-                    
+
                     //Creamos y preparamos el objeto comision con toda la informacion
                     Comision comi = new Comision();
 
-                    comi.setIdcomision(rsContratos.getInt(1));
-                    comi.setFecha_reg(fecha_reg);
-                    comi.setPeriodo_comi(periodo_comi);
-                    comi.setIdcontrato(idcontrato);
-                    comi.setIdpropiedad(idpropiedad);
-                    comi.setIdpropietario(propietario);
-                    comi.setPorc_comi(porc_comi);
-                    comi.setValor_comi(valor_comi);
-                    comi.setValor_canon(valor_canon);
-                    comi.setValor_propietario(valor_propietario);
+                    comi.setFecha_reg(new Date()); //Fecha actual del PC
+                    comi.setPeriodo_comi(periodo); //Variable que pasa por parametro
+                    comi.setIdcontrato(rsContratos.getInt(1));
+                    comi.setIdpropiedad(rsContratos.getInt(2));
+                    comi.setIdpropietario(rsContratos.getInt(3));
+                    comi.setObservacion("COMISIÓN CORRESPONDIENTE AL PERIODO "+periodo); //Observacion Automatica
+                    comi.setPorc_comi(rsContratos.getInt(4));
+                    comi.setValor_comi(rsContratos.getDouble(5)*rsContratos.getInt(4)/100); // --->valor_canon*proc_comi/100
+                    comi.setValor_canon(rsContratos.getDouble(5));
+                    comi.setValor_propietario(comi.getValor_canon()-comi.getValor_comi());
                     
-
-                    comi.setValor_canon(rsContratos.getDouble(4));
-   
-                    comi.setValorComision(comi.getValor_canon() - comi.getValor_propietario());
-                    
-                    comi.setEstado_contrato("Activo");
-
-                    //Colocamos todos los parametros para realizar insert con el objeto pstInsertar_Facturas creado arriba
+                    //Colocamos todos los parametros para realizar insert con el objeto pstInsertar_Comision creado arriba
                     pstInsertar_Comision.setTimestamp(1, new Timestamp(comi.getFecha_reg().getTime()));
                     pstInsertar_Comision.setInt(2, comi.getPeriodo_comi());
                     pstInsertar_Comision.setInt(3, comi.getIdcontrato());
@@ -143,13 +80,11 @@ public class DaoComisionImpl implements DaoComision<Comision> {
                 
             }catch (SQLException e){
                 connect.rollback();
-                
-                
+
                 System.out.println("ERROR en consulta SQL.");
                 System.out.println("SQLException: " + e.getMessage());
                 System.out.println("SQLState: " + e.getSQLState());
                 System.out.println("VendorError: " + e.getErrorCode());
-                
             }
             finally
             {

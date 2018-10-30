@@ -11,6 +11,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import com.demojsf.model.Propiedad;
 import com.demojsf.dao.DaoComision;
+import java.sql.SQLException;
 
 @Named(value = "comisionBean")
 @ViewScoped
@@ -22,7 +23,20 @@ public class ComisionJSFManagedBean implements Serializable {
     private DaoComisionImpl dao = new DaoComisionImpl();
     private boolean modoInsert = false;
     private boolean modoEdit = true;
+    
+    //Variable De periodo de la vista
+    private int periodo;
 
+    public int getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(int periodo) {
+        this.periodo = periodo;
+    }
+    
+    //fin de variable de la vista
+    
     public boolean isModoInsert() {
         return modoInsert;
     }
@@ -63,10 +77,15 @@ public class ComisionJSFManagedBean implements Serializable {
 
     public ComisionJSFManagedBean() {
     }
-
-    public void save() {
-
-        dao.save(comision);
+    
+    public void liquidar(){
+        //dao.liq_comision(periodo);
+    }    
+    public void save() throws ClassNotFoundException, SQLException {
+        
+        dao.liq_comision(periodo);
+        
+        //dao.save(comision);
         lista = dao.getComision();
         comision = new Comision();
         comision.setIdcomision(lista.size() + 1);

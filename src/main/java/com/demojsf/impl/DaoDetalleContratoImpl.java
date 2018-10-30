@@ -66,7 +66,7 @@ public class DaoDetalleContratoImpl implements DaoDetalleContrato<DetalleContrat
     public void update(DetalleContrato dc) {
         Connection connect = null;
         
-        System.out.println("SSSSiiiiiiiii");
+       
         try {
 
             connect = JdbcConnect.getConnect();

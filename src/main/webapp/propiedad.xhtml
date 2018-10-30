@@ -191,7 +191,7 @@
                     </p:column>
                     
                     
-                    <p:column style="width:100px;text-align: center" headerText="Cargar">
+                    <p:column exportable="false" style="width:100px;text-align: center" headerText="Cargar">
                         <p:commandButton update="@form" process="@this" actionListener="#{propiedadBean.changeMode()}" icon="fa fa-eye Fs16 white" title="View">
                             <f:setPropertyActionListener value="#{item}" target="#{propiedadBean.propiedad}" />
                         </p:commandButton>

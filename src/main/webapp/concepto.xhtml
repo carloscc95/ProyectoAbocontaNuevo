@@ -68,7 +68,7 @@
                         <h:outputText value="#{item.porcentaje_iva}" ></h:outputText>
                     </p:column>
                     
-                    <p:column style="width:100px;text-align: center" headerText="Cargar">
+                    <p:column exportable="false" style="width:100px;text-align: center" headerText="Cargar">
                         <p:commandButton update="@form,tabla" process="@this" actionListener="#{conceptoBean.changeMode()}" icon="fa fa-eye Fs16 white" title="View">
                             <f:setPropertyActionListener value="#{item}" target="#{conceptoBean.concepto}" />
                         </p:commandButton>

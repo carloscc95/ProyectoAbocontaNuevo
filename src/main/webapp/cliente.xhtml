@@ -119,8 +119,8 @@
                         <h:outputText value="#{item.asesor}" ></h:outputText>
                     </p:column>
                     
-                    <p:column style="width:100px;text-align: center" headerText="Cargar">
-                        <p:commandButton update="@form" process="@this" actionListener="#{clientBean.changeMode()}" icon="fa fa-eye Fs16 white" title="View">
+                    <p:column exportable="false" style="width:100px;text-align: center" headerText="Cargar">
+                        <p:commandButton  update="@form" process="@this" actionListener="#{clientBean.changeMode()}" icon="fa fa-eye Fs16 white" title="View">
                             <f:setPropertyActionListener value="#{item}" target="#{clientBean.cliente}" />
                         </p:commandButton>
                         

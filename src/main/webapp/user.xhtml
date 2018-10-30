@@ -35,10 +35,10 @@
                     <p:inputText id="iduser" readonly="true" value="#{usuarioBean.usuario.iduser}"></p:inputText>
                    
                     <p:outputLabel for="correo">Correo</p:outputLabel>
-                    <p:inputText id="correo"  placeholder="Digite el Correo" style="width: 100% !important;" value="#{usuarioBean.usuario.correo}"></p:inputText>
+                    <p:inputText id="correo"  required="true" placeholder="Digite el Correo" style="width: 100% !important;" value="#{usuarioBean.usuario.correo}"></p:inputText>
                     
                     <p:outputLabel for="clave">Clave</p:outputLabel>
-                    <p:inputText id="clave" placeholder="Digite la Clave"  value="#{usuarioBean.usuario.clave}"></p:inputText>
+                    <p:inputText id="clave" required="true" placeholder="Digite la Clave"  value="#{usuarioBean.usuario.clave}"></p:inputText>
                     
 
                     <p:selectBooleanCheckbox itemLabel="Registros" value="#{usuarioBean.usuario.m1_reg}" id="m1_reg"/>

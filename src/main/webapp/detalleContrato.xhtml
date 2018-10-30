@@ -59,6 +59,17 @@
             </p:panel>
             
             <p:panel header="Listado de Detalles Contrato">
+                
+                <h:commandLink immediate="true">
+                    <h:graphicImage url="resources/imagenes/PDF.png" />
+                    <p:dataExporter type="pdf" target="tabla" fileName="detalleContratoPdf"/>
+                </h:commandLink>
+
+                <h:commandLink immediate="true">
+                    <h:graphicImage url="resources/imagenes/XLS.png" />
+                    <p:dataExporter type="xls" target="tabla" fileName="detalleContratoXls"/>
+                </h:commandLink>
+                
                 <p:dataTable  paginator="true" rows="10" emptyMessage="No hay detalles creados" id="tabla" value="#{detalleContratoBean.lista}" var="item">
                     
                    <p:column sortBy="#{item.idDetalleContratoConcep}" headerText="idDetalleContratoConcep">
@@ -83,7 +94,7 @@
                         <h:outputText value="#{item.periodo_fin}" ></h:outputText>
                     </p:column>
                     
-                    <p:column style="width:100px;text-align: center" headerText="Cargar">
+                    <p:column exportable="false" style="width:100px;text-align: center" headerText="Cargar">
                         <p:commandButton update="@form" process="@this" actionListener="#{detalleContratoBean.changeMode()}" icon="fa fa-eye Fs16 white" title="View">
                             <f:setPropertyActionListener value="#{item}" target="#{detalleContratoBean.detalleContrato}" />
                         </p:commandButton>

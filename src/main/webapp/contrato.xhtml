@@ -107,7 +107,7 @@
                     <p:column headerText="idpropiedad">
                         <h:outputText value="#{item.idpropied}"></h:outputText>
                     </p:column>
-                   <p:column style="width:100px;text-align: center" headerText="Cargar">
+                   <p:column exportable="false" style="width:100px;text-align: center" headerText="Cargar">
                         <p:commandButton update="@form" process="@this" actionListener="#{contratoBean.changeMode()}" icon="fa fa-eye Fs16 white" title="View">
                             <f:setPropertyActionListener value="#{item}" target="#{contratoBean.contrato}" />
                         </p:commandButton>

@@ -21,7 +21,7 @@ public class DaoClienteImpl implements DaoCliente<Cliente> {
     public void save(Cliente c) {
         try {
             if (existe(c)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existente!", "Concepto ya existe...."));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existente!", "Cliente ya existe...."));
             } else {
 
                 Connection connect = null;

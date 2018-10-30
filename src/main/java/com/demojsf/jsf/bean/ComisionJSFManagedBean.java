@@ -46,7 +46,7 @@ public class ComisionJSFManagedBean implements Serializable {
     @PostConstruct
     public void iniciar() {
         lista = dao.getComision();
-        comision.setId_liq_comision(lista.size() + 1);
+        comision.setIdcomision(lista.size() + 1);
     }
 
     public List<Comision> getLista() {
@@ -69,7 +69,7 @@ public class ComisionJSFManagedBean implements Serializable {
         dao.save(comision);
         lista = dao.getComision();
         comision = new Comision();
-        comision.setId_liq_comision(lista.size() + 1);
+        comision.setIdcomision(lista.size() + 1);
     }
     
     public void delete() {
@@ -77,7 +77,7 @@ public class ComisionJSFManagedBean implements Serializable {
         dao.delete(comision);
         lista = dao.getComision();
         comision = new Comision();
-        comision.setId_liq_comision(lista.size() + 1);
+        comision.setIdcomision(lista.size() + 1);
         modoEdit = true;
         modoInsert = false;
     }
@@ -87,7 +87,7 @@ public class ComisionJSFManagedBean implements Serializable {
         dao.update(comision);
         lista = dao.getComision();
         comision = new Comision();
-        comision.setId_liq_comision(lista.size() + 1);
+        comision.setIdcomision(lista.size() + 1);
         modoEdit = true;
         modoInsert = false;
     }

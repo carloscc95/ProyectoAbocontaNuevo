@@ -1,0 +1,70 @@
+    <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+       
+       <style type="text/css">
+            .ui-panel {
+                margin-top:20px
+            }
+
+            .inlineCalendarDemo > .hasDatepicker {
+                padding-left: 50px;
+            }
+        </style>
+           
+             
+       <h:form>
+           <p:messages id="messages" showDetail="true" closable="true">
+                
+            </p:messages>
+
+                  <p:panel header="Informe de ventas">
+                      <f:facet name="footer">  
+                          <p:commandButton title="Generar" icon="fa fa-gears Fs16 white" update="tabla,@form"  id="btnSave"  actionListener="#{infoventasBean.generarInforme}" ></p:commandButton>                   
+                </f:facet>
+                      
+                    <p:panelGrid columns="4" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
+                   
+                    <p:outputLabel for="mes_ini">Mes Inicial</p:outputLabel>
+                    <p:inputNumber id="mes_ini" required="True" placeholder="" value="#{infoventasBean.mes_Ini}" decimalPlaces="0"></p:inputNumber>
+                   
+                    <p:outputLabel for="mes_fin">Mes Final</p:outputLabel>
+                    <p:inputNumber id="mes_fin" required="True" placeholder="" value="#{infoventasBean.mes_Fin}" decimalPlaces="0"></p:inputNumber>
+                
+                
+              </p:panelGrid>
+            </p:panel>  
+                
+            <p:panel header="Informe">
+                <h:commandLink>
+                    <h:graphicImage url="resources/imagenes/PDF.png" width="24"/>
+                    <p:dataExporter type="pdf" target="tabla" fileName="InfoVentasPdf"/>
+                </h:commandLink>
+                
+                <h:commandLink>
+                    <h:graphicImage url="resources/imagenes/XLS.png" width="24"/>
+                    <p:dataExporter type="xls" target="tabla" fileName="InfoventasXls"    />
+                </h:commandLink>
+                
+          
+                <p:dataTable  paginator="true" rows="2" emptyMessage="No hay informes generados" id="tabla" value="#{infoventasBean.lista}" var="item">
+                    
+                   
+                    <p:column headerText="Fecha Factura">
+                        <h:outputText value="#{item.mes}" ></h:outputText>
+                    </p:column>
+                    <p:column  headerText="Valor">
+                        <h:outputText value="#{item.valorTotal}"></h:outputText>
+                    </p:column>
+                      
+                </p:dataTable>
+                         
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

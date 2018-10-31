@@ -14,5 +14,5 @@ import java.util.List;
 public interface DaoInfoVentas <Infoventas>{
     
     List<Infoventas> InfoVenta(int Mes_ini,int Mes_Fin);
-    void GenerarInforme();
+    void generarInforme();
 }

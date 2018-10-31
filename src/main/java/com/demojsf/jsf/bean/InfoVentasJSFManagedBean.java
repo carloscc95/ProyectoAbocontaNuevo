@@ -51,8 +51,8 @@ public class InfoVentasJSFManagedBean implements Serializable {
     
   
     
-    public void GenerarInforme() {
-        dao.InfoVenta(Mes_Ini,Mes_Fin);
+    public void generarInforme() {
+        //dao.InfoVenta(Mes_Ini,Mes_Fin);
         lista = dao.InfoVenta(Mes_Ini, Mes_Fin);
     }
 

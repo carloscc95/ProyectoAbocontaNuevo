@@ -18,18 +18,16 @@ import javax.faces.view.ViewScoped;
 
 public class FacturaJSFManagedBean implements Serializable {
 
-
     private Factura factura = new Factura();
     private List<Factura> lista = new ArrayList<>();
     private List<Factura> listafactu = new ArrayList<>();
-    private List<Factura> listarecau = new ArrayList<>();
     private DaoFacturaImpl dao = new DaoFacturaImpl();
     private List<Factura> filteredFactura;
+   
     private boolean modoInsert = false;
     private boolean modoEdit = true;
     
     ///******** Inicio de variables de formulario ********///
-    
     private int num_factura;
     private Date fec_crea = new Date();
     private Date fec_factu = new Date();
@@ -103,8 +101,6 @@ public class FacturaJSFManagedBean implements Serializable {
         this.obser = obser;
     }
 
-    
-
    ///******** Fin de variables de formulario ********///
     
     
@@ -132,7 +128,6 @@ public class FacturaJSFManagedBean implements Serializable {
     public void iniciar() {
         lista = dao.getFact();
         listafactu = dao.getListFact();
-        listarecau = dao.getListRecau();
         factura.setIdfactura(lista.size() + 1);
     }
 
@@ -143,16 +138,7 @@ public class FacturaJSFManagedBean implements Serializable {
     public void setFilteredFactura(List<Factura> filteredFactura) {
         this.filteredFactura = filteredFactura;
     }
-    
-  
-    public List<Factura> getListarecau() {
-        return listarecau;
-    }
-
-    public void setListarecau(List<Factura> listarecau) {
-        this.listarecau = listarecau;
-    }
-    
+      
     public List<Factura> getListafactu() {
         return listafactu;
     }
@@ -193,38 +179,7 @@ public class FacturaJSFManagedBean implements Serializable {
         modoEdit = true;
         modoInsert = false;
     }
-
-    public void update() {
-
-        dao.update(factura);
-        lista = dao.getFact();
-        factura = new Factura();
-        factura.setIdfactura(lista.size() + 1);
-        modoEdit = true;
-        modoInsert = false;
-    }
-    
-    public void updateComision() {
-
-        dao.updateComision(factura);
-        filteredFactura.clear();
-        listafactu = dao.getListFact();
-        factura = new Factura();
-        factura.setIdfactura(listafactu.size() + 1);
-        
-        
-
-    }
-    
-    public void updateRecaudo() {
-
-        dao.updateRecaudo(factura);       
-        filteredFactura.clear();       
-        listarecau = dao.getListRecau();
-        factura = new Factura();
-        factura.setIdfactura(listarecau.size() + 1);
-
-    }*/
+    */
 
     public void changeMode() {
         modoEdit = false;

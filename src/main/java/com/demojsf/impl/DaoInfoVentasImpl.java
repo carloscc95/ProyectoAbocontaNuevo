@@ -30,8 +30,8 @@ public class DaoInfoVentasImpl implements DaoInfoVentas<Infoventas>{
         try {
            
             connect = JdbcConnect.getConnect();
-            PreparedStatement pstFacturas = connect.prepareStatement("SELECT MONTH(fecha_facturacion) AS Mes\n"
-                    +", SUM(valor_total) As total_mes FROM facturas WHERE month(fecha_facturacion) between Mes_Ini and Mes_Fin\n" 
+            PreparedStatement pstFacturas = connect.prepareStatement("SELECT MONTH(fecha_facturacion) AS Mes "
+                    +", SUM(valor_total) As total_mes FROM factura WHERE month(fecha_facturacion) between "+ Mes_ini +" and "+ Mes_Fin  
                     +" GROUP BY Mes");
             
                   
@@ -43,6 +43,7 @@ public class DaoInfoVentasImpl implements DaoInfoVentas<Infoventas>{
                 
                 info.setMes(rsFacturasMes.getInt(1));
                 info.setValorTotal(rsFacturasMes.getDouble(2));
+                
                 lista.add(info);
             }
            
@@ -59,7 +60,7 @@ public class DaoInfoVentasImpl implements DaoInfoVentas<Infoventas>{
     }   
 
     @Override
-    public void GenerarInforme() {
+    public void generarInforme() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

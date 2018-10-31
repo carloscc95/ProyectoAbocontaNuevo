@@ -21,9 +21,10 @@
             </p:messages>
             <p:panel header="Liquidación de Comisiones">
                 <p:panelGrid columns="3" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
-                    <p:outputLabel for="periodo_liquidar">Fecha Registro Comision</p:outputLabel>
-                    <p:calendar id="periodo_liquidar" placeholder="Periodo a liquidar" value="#{comisionBean.comision.periodo_comi}" showOn="button" ></p:calendar>
+                    <p:outputLabel for="periodo_comi">Periodo a Liquidar</p:outputLabel>
+                    <p:inputText id="periodo_comi" placeholder="Periodo a liquidar" value="#{comisionBean.comision.periodo_comi}" ></p:inputText>
                     <p:commandButton title="Liquidar" disabled="#{comisionBean.modoInsert}" icon="fa fa-flash Fs16 white" update="tabla,@form" id="btnLiquidar" actionListener="#{comisionBean.Liq_comision()}" ></p:commandButton>
+                
                 </p:panelGrid>    
             </p:panel>
                                  
@@ -47,7 +48,7 @@
                     <p:column headerText="fecha_reg">
                         <h:outputText value="#{item.fecha_reg}"></h:outputText>
                     </p:column>
-                    <p:column  headerText="periodo_comi">
+                    <p:column filterBy="#{item.periodo_comi}" headerText="periodo_comi">
                         <h:outputText value="#{item.periodo_comi}"></h:outputText>
                     </p:column>
                     <p:column headerText="idcontrato">
@@ -74,13 +75,7 @@
                     <p:column headerText="valor_propietario">
                         <h:outputText value="#{item.valor_propietario}" ></h:outputText>
                     </p:column>
-                    
-                    <p:column style="width:100px;text-align: center" headerText="Cargar">
-                        <p:commandButton update="@form,tabla" process="@this" actionListener="#{comisionBean.changeMode()}" icon="fa fa-eye Fs16 white" title="View">
-                            <f:setPropertyActionListener value="#{item}" target="#{comisionBean.comision}" />
-                        </p:commandButton>
-                       </p:column> 
-                    
+                                   
                     
                     
                 </p:dataTable>

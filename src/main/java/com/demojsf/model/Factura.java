@@ -15,8 +15,8 @@ import java.util.Date;
     private String prefijo;
     private String resDian;
     private String rangoFactura;
-    private String cod_propiedad;
-    private String cc_nit_cliente;
+    private int cod_propiedad;
+    private int cc_nit_cliente;
     private String observacion;
     private double valorCanon;
     private double valorOtros;
@@ -153,19 +153,19 @@ import java.util.Date;
         this.prefijo = prefijo;
     }
 
-    public String getCod_propiedad() {
+    public int getCod_propiedad() {
         return cod_propiedad;
     }
 
-    public void setCod_propiedad(String cod_propiedad) {
+    public void setCod_propiedad(int cod_propiedad) {
         this.cod_propiedad = cod_propiedad;
     }
 
-    public String getCc_nit_cliente() {
+    public int getCc_nit_cliente() {
         return cc_nit_cliente;
     }
 
-    public void setCc_nit_cliente(String cc_nit_cliente) {
+    public void setCc_nit_cliente(int cc_nit_cliente) {
         this.cc_nit_cliente = cc_nit_cliente;
     }
 

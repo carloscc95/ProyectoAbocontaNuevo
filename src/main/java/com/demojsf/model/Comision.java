@@ -6,7 +6,7 @@ import java.util.Date;
  public class Comision {
 
     private int idcomision;
-    private Date fecha_reg;
+    private Date fecha_reg=new Date();
     private int periodo_comi;
     private int idcontrato;
     private int idpropiedad;

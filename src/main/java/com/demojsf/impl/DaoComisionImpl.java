@@ -29,11 +29,11 @@ public class DaoComisionImpl implements DaoComision<Comision> {
             connect = JdbcConnect.getConnect();
             
             //Buscamos los contratos activos 
-            PreparedStatement pstContratos = connect.prepareStatement("SELECT c.numcontrato, c.idpropiedad, pt.idpropietario, pt.porccomi, c.valor_canon"
-                                                                    + "FROM contrato c "
-                                                                    + "inner join propiedad pd on c.idpropiedad = pd.idpropiedad "
-                                                                    + "inner join propietarios pt on  pd.idpropietario = pt.idpropietario "
-                                                                    + "where c.estado = \"Activo\" order by 1");
+            PreparedStatement pstContratos = connect.prepareStatement("SELECT c.numcontrato, c.idpropied, pt.idpropietario, pt.porccomi, c.valor "
+                                                                    + " FROM contrato c "
+                                                                    + " inner join propiedad pd on c.idpropied = pd.idpropiedad "
+                                                                    + " inner join propietarios pt on  pd.idpropietario = pt.idpropietario "
+                                                                    + " where c.estado = \"Activo\" order by 1");
             ResultSet rsContratos = pstContratos.executeQuery();
             
             //Preparamos sentncia del insert en la tabla de Comision
@@ -48,7 +48,7 @@ public class DaoComisionImpl implements DaoComision<Comision> {
                     //Creamos y preparamos el objeto comision con toda la informacion
                     Comision comi = new Comision();
 
-                    comi.setFecha_reg(new Date()); //Fecha actual del PC
+                    //comi.setFecha_reg(new Date()); //Fecha actual del PC
                     comi.setPeriodo_comi(periodo); //Variable que pasa por parametro
                     comi.setIdcontrato(rsContratos.getInt(1));
                     comi.setIdpropiedad(rsContratos.getInt(2));

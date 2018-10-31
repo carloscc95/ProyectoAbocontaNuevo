@@ -12,6 +12,7 @@ import javax.faces.view.ViewScoped;
 import com.demojsf.model.Propiedad;
 import com.demojsf.dao.DaoComision;
 import java.sql.SQLException;
+import java.util.Date;
 
 @Named(value = "comisionBean")
 @ViewScoped
@@ -25,7 +26,7 @@ public class ComisionJSFManagedBean implements Serializable {
     private boolean modoEdit = true;
     
     //Variable De periodo de la vista
-    private int periodo;
+    private int periodo= new Date().getMonth();
 
     public int getPeriodo() {
         return periodo;
@@ -59,8 +60,8 @@ public class ComisionJSFManagedBean implements Serializable {
 
     @PostConstruct
     public void iniciar() {
-        lista = dao.getComision();
-        comision.setIdcomision(lista.size() + 1);
+        //lista = dao.getComision();
+        //comision.setIdcomision(lista.size() + 1);
     }
 
     public List<Comision> getLista() {
@@ -88,7 +89,7 @@ public class ComisionJSFManagedBean implements Serializable {
         //dao.save(comision);
         lista = dao.getComision();
         comision = new Comision();
-        comision.setIdcomision(lista.size() + 1);
+//        comision.setIdcomision(lista.size() + 1);
     }
     
     public void delete() {

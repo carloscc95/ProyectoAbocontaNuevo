@@ -126,7 +126,7 @@ public class FacturaJSFManagedBean implements Serializable {
 
     @PostConstruct
     public void iniciar() {
-        lista = dao.getFact();
+        lista = dao.getFact(fec_factu);
         listafactu = dao.getListFact();
         factura.setIdfactura(lista.size() + 1);
     }
@@ -165,7 +165,7 @@ public class FacturaJSFManagedBean implements Serializable {
     public void save() {
 
         dao.save(num_factura,fec_crea,fec_factu,fec_venc,contrato_ini,contrato_fin,exluir,obser);
-        lista = dao.getFact();
+        lista = dao.getFact(fec_factu);
         //factura = new Factura();
         //factura.setIdfactura(lista.size() + 1);
     }

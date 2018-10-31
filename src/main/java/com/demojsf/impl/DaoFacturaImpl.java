@@ -119,17 +119,18 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
 
                     fac.setObservacion(obser);
                     
-                    fac.setCc_nit_cliente(rsContratos.getString(2));
-                    fac.setCod_propiedad(rsContratos.getString(3));
+                    fac.setCc_nit_cliente(rsContratos.getInt(2));
+                    fac.setCod_propiedad(rsContratos.getInt(3));
                     
                     fac.setValorCanon(rsContratos.getDouble(4));
 
                     //****** Recorrer el detalle de factura ******//
                     PreparedStatement 
-                            pstDetaContra = connect.prepareStatement("Select idconc,c.nom_concepto,valor,porc_iva,idpropied,valor "
-                                    + "from detallecontrato d "
-                                    + "Inner join concepto c on  d.idconc = c.idconcepto"
-                                    + "where d.idcontra="+fac.getNum_contrato()+" order by 2");
+                            pstDetaContra = connect.prepareStatement("Select d.idconc,c.nom_concepto,d.valor,d.porc_iva "
+                                    + " from detallecontrato d "
+                                    + " Inner join concepto c on  d.idconc = c.idconcepto "
+                                    + " where d.idcontra="+fac.getNum_contrato()+" order by 2");
+                    
                     ResultSet rsDetaContra = pstDetaContra.executeQuery();
                                         
                     while (rsDetaContra.next()) {
@@ -194,8 +195,8 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
                     pstInsertar_Facturas.setTimestamp(8, new Timestamp(fac.getFecha_vencimiento().getTime()));
                     pstInsertar_Facturas.setInt(9, fac.getDias());
                     pstInsertar_Facturas.setString(10, fac.getObservacion());
-                    pstInsertar_Facturas.setString(11, fac.getCc_nit_cliente());
-                    pstInsertar_Facturas.setString(12, fac.getCod_propiedad());
+                    pstInsertar_Facturas.setInt(11, fac.getCc_nit_cliente());
+                    pstInsertar_Facturas.setInt(12, fac.getCod_propiedad());
                     pstInsertar_Facturas.setDouble(13, fac.getValorCanon());
                     pstInsertar_Facturas.setDouble(14, fac.getValorOtros());
                     pstInsertar_Facturas.setDouble(15, fac.getValorIva());
@@ -314,32 +315,6 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
             Logger.getLogger(DaoFacturaImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    @Override
-    public void updateRecaudo(Factura f) {
-
-        Connection connect = null;
-        try {
-
-            connect = JdbcConnect.getConnect();
-
-            PreparedStatement pst = connect.prepareStatement("Update Factura set Estado_recaudo='ON' where Idfactura=?");
-            
-            pst.setInt(1, f.getIdfactura());
-                        
-            pst.executeUpdate();
-            connect.commit();
-        } catch (ClassNotFoundException | SQLException ex) {
-            try {
-                if (connect != null) {
-                    connect.rollback();
-                }
-            } catch (SQLException ex1) {
-                Logger.getLogger(DaoFacturaImpl.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-            Logger.getLogger(DaoFacturaImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     @Override
     public void delete(Factura f) {
@@ -368,24 +343,42 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
     }*/
 
     @Override
-    public List<Factura> getFact() {
+    public List<Factura> getFact(Date fecha_fac) {
         List<Factura> lista = new ArrayList<>();
         try {
             Connection connect = JdbcConnect.getConnect();
-            PreparedStatement pst = connect.prepareStatement("Select * from Factura order by 1");
+            PreparedStatement pst = connect.prepareStatement("Select idcontra,cons_factura,prefijo,resDian,factAutori,"
+                        + "fecha_creacion,fecha_facturacion,fecha_vencFact,dias,observacion,idclie,idpropied,valor_canon,valor_otros,valor_iva,"
+                        + "valor_total,valor_saldo_cxc,estado_factura from Factura where fecha_facturacion= "+ fecha_fac.getTime() +" order by 2");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Factura f = new Factura();     
+                Factura fac = new Factura();
                 
-                f.setIdfactura(rs.getInt(1));
-                f.setCons_factura(rs.getInt(2));
-                f.setNum_contrato(rs.getInt(3));
-                f.setFecha_creacion(rs.getDate(4));
-                f.setFecha_facturacion(rs.getDate(5));
-                f.setDias(rs.getInt(6));
-                f.setPrefijo(rs.getString(7));
+                fac.setNum_contrato(rs.getInt(1));
+                fac.setCons_factura(rs.getInt(2));
+                fac.setPrefijo(rs.getString(3));
+                fac.setResDian(rs.getString(4));
+                fac.setRangoFactura(rs.getString(5));
+                fac.setFecha_creacion(rs.getDate(6));
+                fac.setFecha_facturacion(rs.getDate(7));
+                fac.setFecha_vencimiento(rs.getDate(8));
+                fac.setDias(rs.getInt(9));
+                fac.setObservacion(rs.getString(10));
 
-                lista.add(f);
+                fac.setCc_nit_cliente(rs.getInt(11));
+                fac.setCod_propiedad(rs.getInt(12));
+
+                fac.setValorCanon(rs.getDouble(13));
+                
+                fac.setValorOtros(rs.getDouble(14));
+                fac.setValorIva(rs.getDouble(15));
+                
+                fac.setValorTotal(rs.getDouble(16));
+                fac.setSaldoCXC(rs.getDouble(17));
+
+                fac.setEstado_factura(rs.getString(18));
+                
+                lista.add(fac);
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DaoFacturaImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -396,7 +389,7 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
     @Override
     public List<Factura> getListFact() {
         List<Factura> lista = new ArrayList<>();
-        try {
+        /*try {
             Connection connect = JdbcConnect.getConnect();
             PreparedStatement pst = connect.prepareStatement("Select f.idfactura,f.cons_factura,f.idcontra,f.fecha_creacion,f.fecha_facturacion,f.dias"
                     + ",f.prefijo,f.idpropied,f.idclie,f.observacion,f.valor,f.saldo_factura,f.iva,f.estado_factura,f.estado_comision,f.estado_recaudo,pr.porccomi from Factura f "
@@ -414,14 +407,14 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
                 f.setFecha_facturacion(rs.getDate(5));
                 f.setDias(rs.getInt(6));
                 f.setPrefijo(rs.getString(7));
-                f.setCod_propiedad(rs.getString(8));
-                f.setCc_nit_cliente(rs.getString(9));
+                f.setCod_propiedad(rs.getInt(8));
+                f.setCc_nit_cliente(rs.getInt(9));
 
                 lista.add(f);
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DaoFacturaImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         return lista;
     }
     

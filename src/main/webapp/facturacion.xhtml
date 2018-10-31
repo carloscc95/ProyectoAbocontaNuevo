@@ -61,57 +61,42 @@
             </p:panel>
            
            <p:panel header="Listado de Facturas">
-               <p:dataTable  paginator="true" rows="10" emptyMessage="No data row" id="tabla" value="#{facturaBean.lista}" var="item">
-                    
-                    <p:column sortBy="#{item.idfactura}" headerText="Idfactura">
-                       <h:outputText  value="#{item.idfactura}"></h:outputText>
-                    </p:column>
-                    <p:column sortBy="#{item.cons_factura}" headerText="ConsFactura">
+               <p:dataTable  paginator="true" rows="10" emptyMessage="No hay facturas" id="tabla" value="#{facturaBean.lista}" var="item">
+
+                    <p:column sortBy="#{item.cons_factura}" headerText="No. Fact.">
                        <h:outputText value="#{item.cons_factura}"></h:outputText>
                     </p:column>
-                    <p:column  sortBy="#{item.num_contrato}" headerText="NumContrato">
+                    <p:column  sortBy="#{item.num_contrato}" headerText="Contrato">
                        <h:outputText value="#{item.num_contrato}"></h:outputText>
                     </p:column>
-                    <p:column sortBy="#{item.fecha_creacion}" headerText="FechCreación">
-                        <h:outputText value="#{item.fecha_creacion}"/>
-                    </p:column>
-                    <p:column sortBy="#{item.fecha_facturacion}" headerText="FechaFact">
+                    <p:column sortBy="#{item.fecha_facturacion}" headerText="Fecha Fac.">
                         <h:outputText value="#{item.fecha_facturacion}"/>
                     </p:column>
-                    <p:column sortBy="#{item.dias}" headerText="Reg. Propiedades">
+                   <p:column sortBy="#{item.fecha_vencimiento}" headerText="Fecha Ven.">
+                        <h:outputText value="#{item.fecha_vencimiento}"/>
+                    </p:column>
+                    <p:column sortBy="#{item.dias}" headerText="Dias V.">
                         <h:outputText value="#{item.dias}"/>
                     </p:column>
-                    <p:column sortBy="#{item.prefijo}" headerText="Reg. Clientes">
-                        <h:outputText value="#{item.prefijo}"/>
-                    </p:column>
-                    <p:column sortBy="#{item.cod_propiedad}" headerText="cod_propiedad">
+                    <p:column sortBy="#{item.cod_propiedad}" headerText="Propiedad">
                         <h:outputText value="#{item.cod_propiedad}"/>
                     </p:column>
-                    <p:column sortBy="#{item.cc_nit_cliente}" headerText="Facturas">
+                    <p:column sortBy="#{item.cc_nit_cliente}" headerText="Cliente">
                         <h:outputText value="#{item.cc_nit_cliente}"/>
                     </p:column>
-                    <p:column sortBy="#{item.observacion}" headerText="Recaudos">
-                        <h:outputText value="#{item.observacion}"/>
+                   <p:column sortBy="#{item.valorCanon}" headerText="Vlr. Canon">
+                        <h:outputText value="#{item.valorCanon}"/>
                     </p:column>
-                    <p:column sortBy="#{item.valor}" headerText="Comision">
-                        <h:outputText value="#{item.valor}"/>
+                   <p:column sortBy="#{item.valorOtros}" headerText="Vlr. Conc.">
+                        <h:outputText value="#{item.valorOtros}"/>
                     </p:column>
-                    <p:column sortBy="#{item.saldo_factura}" headerText="Inf./Consul." >
-                        <h:outputText value="#{item.saldo_factura}"/>
+                   <p:column sortBy="#{item.valorIva}" headerText="Vlr. IVA">
+                        <h:outputText value="#{item.valorIva}"/>
                     </p:column>
-                    <p:column sortBy="#{item.iva}" headerText="Inf./Consul." >
-                        <h:outputText value="#{iva}"/>
+                    <p:column sortBy="#{item.valorTotal}" headerText="Vlr. Tot.">
+                        <h:outputText value="#{item.valorTotal}"/>
                     </p:column>
-                    <p:column sortBy="#{item.estado_factura}" headerText="Inf./Consul." >
-                        <h:outputText value="#{item.estado_factura}"/>
-                    </p:column>
-                    <p:column sortBy="#{item.estado_comision}" headerText="Inf./Consul." >
-                       <h:outputText value="#{item.estado_comision}"/>
-                    </p:column>
-                    <p:column sortBy="#{item.estado_recaudo}" headerText="Inf./Consul." >
-                        <h:outputText value="#{item.estado_recaudo}"/>
-                    </p:column>
-                   
+                    
                    
                     <p:column style="width:32px;text-align: center">
                         <p:commandButton update="@form" icon="fa fa-eye Fs16 white">

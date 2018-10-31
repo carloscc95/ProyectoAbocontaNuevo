@@ -1,4 +1,4 @@
-
+//Nueva
 package com.demojsf.jsf.bean;
 
 import com.demojsf.impl.DaoContratoImpl;
@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 @Named(value = "contratoBean")
 @ViewScoped
 
@@ -26,11 +27,20 @@ public class ContratoJSFManagedBean implements Serializable {
 
     private Contrato contrato = new Contrato();
     private List<Contrato> lista = new ArrayList<>();
+    private List<Contrato> listaContAct = new ArrayList<>();
     private List<Cliente> listaClientes = new ArrayList<>();
     private DaoContrato dao = new DaoContratoImpl();
     private boolean modoInsert = false;
     private boolean modoEdit = true;
 
+    public List<Contrato> getListaContAct() {
+        return listaContAct;
+    }
+
+    public void setListaContAct(List<Contrato> listaContAct) {
+        this.listaContAct = listaContAct;
+    }
+    
     public boolean isModoInsert() {
         return modoInsert;
     }
@@ -54,6 +64,7 @@ public class ContratoJSFManagedBean implements Serializable {
     @PostConstruct
     public void iniciar() {
         lista = dao.getContrato();
+        listaContAct=dao.getContratoActivos(); 
         contrato.setNumcontrato(lista.size() + 1);
     }
 
@@ -84,6 +95,7 @@ public class ContratoJSFManagedBean implements Serializable {
 
         dao.save(contrato);
         lista = dao.getContrato();
+        listaContAct=dao.getContratoActivos();
         contrato = new Contrato();
         contrato.setNumcontrato(lista.size() + 1);
     }
@@ -92,6 +104,7 @@ public class ContratoJSFManagedBean implements Serializable {
 
         dao.delete(contrato);
         lista = dao.getContrato();
+        listaContAct=dao.getContratoActivos();
         contrato = new Contrato();
         contrato.setNumcontrato(lista.size() + 1);
         modoEdit = true;
@@ -102,6 +115,7 @@ public class ContratoJSFManagedBean implements Serializable {
 
         dao.update(contrato);
         lista = dao.getContrato();
+        listaContAct=dao.getContratoActivos();
         contrato = new Contrato();
         contrato.setNumcontrato(lista.size() + 1);
         modoEdit = true;

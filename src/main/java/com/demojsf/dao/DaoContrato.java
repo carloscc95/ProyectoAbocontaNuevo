@@ -12,9 +12,12 @@ import java.util.List;
  * @author docente
  * @param <Contrato>
  */
+//Nueva
+
 public interface DaoContrato<Contrato> {
     void save(Contrato c);
     void update(Contrato c);
     void delete(Contrato c);
     List<Contrato> getContrato();
+    List<Contrato> getContratoActivos();
 }

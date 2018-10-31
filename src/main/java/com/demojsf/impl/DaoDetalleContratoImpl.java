@@ -31,14 +31,19 @@ public class DaoDetalleContratoImpl implements DaoDetalleContrato<DetalleContrat
             connect = JdbcConnect.getConnect();
 
             PreparedStatement pst = connect.
-                    prepareStatement("Insert into DetalleContrato (idDetalleContratoConcep,idcontra,idconc,valor,estado,periodo_ini,periodo_fin) values(?,?,?,?,?,?,?)");
+                    prepareStatement("Insert into DetalleContrato (idDetalleContratoConcep,idcontra,idconc,valor, "
+                            + "valor_total, valor_pagado,porc_iva,estado,periodo_ini,periodo_fin) "
+                            + " values(?,?,?,?,?,?,?,?,?,?)");
             pst.setInt(1, dc.getIdDetalleContratoConcep());
             pst.setInt(2, dc.getIdcontra());
             pst.setInt(3, dc.getIdconc());
-            pst.setDouble(4, dc.getValor());
-            pst.setString(5, dc.getEstado());
-            pst.setTimestamp(6, new Timestamp (dc.getPeriodo_ini().getTime()));
-            pst.setTimestamp(7, new Timestamp (dc.getPeriodo_fin().getTime()));           
+            pst.setDouble(4, dc.getValorMensual());
+            pst.setDouble(5, dc.getValorTotalPagar());
+            pst.setDouble(6, dc.getValorPagado());
+            pst.setInt(7, dc.getPorcIva());
+            pst.setString(8, dc.getEstado());
+            pst.setTimestamp(9, new Timestamp (dc.getPeriodo_ini().getTime()));
+            pst.setTimestamp(10, new Timestamp (dc.getPeriodo_fin().getTime()));           
             pst.executeUpdate();
             connect.commit();
         } catch (ClassNotFoundException | SQLException ex) {
@@ -71,14 +76,17 @@ public class DaoDetalleContratoImpl implements DaoDetalleContrato<DetalleContrat
 
             connect = JdbcConnect.getConnect();
 
-            PreparedStatement pst = connect.prepareStatement("Update DetalleContrato set idcontra=?,idconc=?,valor=?,estado=?,periodo_ini=?,periodo_fin=? where idDetalleContratoConcep=?");
-            pst.setInt(7, dc.getIdDetalleContratoConcep());
+            PreparedStatement pst = connect.prepareStatement("Update DetalleContrato set idcontra=?,idconc=?,valor=?,valor_total=?, valor_pagado=?,porc_iva=?,estado=?,periodo_ini=?,periodo_fin=? where idDetalleContratoConcep=?");
+            pst.setInt(10, dc.getIdDetalleContratoConcep());
             pst.setInt(1, dc.getIdcontra());
             pst.setInt(2, dc.getIdconc());
-            pst.setDouble(3, dc.getValor());
-            pst.setString(4, dc.getEstado());
-            pst.setTimestamp(5, new Timestamp (dc.getPeriodo_ini().getTime()));
-            pst.setTimestamp(6, new Timestamp (dc.getPeriodo_fin().getTime()));
+            pst.setDouble(3, dc.getValorMensual());
+            pst.setDouble(4, dc.getValorTotalPagar());
+            pst.setDouble(5, dc.getValorPagado()); 
+            pst.setInt(6, dc.getPorcIva());
+            pst.setString(7, dc.getEstado());
+            pst.setTimestamp(8, new Timestamp (dc.getPeriodo_ini().getTime()));
+            pst.setTimestamp(9, new Timestamp (dc.getPeriodo_fin().getTime()));
             pst.executeUpdate();
             connect.commit();
         } catch (ClassNotFoundException | SQLException ex) {
@@ -120,22 +128,30 @@ public class DaoDetalleContratoImpl implements DaoDetalleContrato<DetalleContrat
     }
 
     @Override
-    public List<DetalleContrato> getDetalleContrato() {
+    public List<DetalleContrato> getDetalleContrato(int idContrato) {
         List<DetalleContrato> lista = new ArrayList<>();
         try {
             Connection connect = JdbcConnect.getConnect();
             PreparedStatement pst = connect.
-                    prepareStatement("Select * from DetalleContrato order by 1");
+                    prepareStatement("Select IdDetalleContratoConcep,Idcontra,idconc,valor, "
+                                        + "valor_total, valor_pagado, porc_iva, estado, periodo_ini, periodo_fin "
+                                    + "from DetalleContrato where Idcontra="+idContrato+" order by 1");
+            
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 DetalleContrato dc = new DetalleContrato();
+                
+                
                 dc.setIdDetalleContratoConcep(rs.getInt(1));
                 dc.setIdcontra(rs.getInt(2));
                 dc.setIdconc(rs.getInt(3));
-                dc.setValor(rs.getInt(4));
-                dc.setEstado(rs.getString(5));
-                dc.setPeriodo_ini(rs.getDate(6));
-                dc.setPeriodo_fin(rs.getDate(7));
+                dc.setValorMensual(rs.getDouble(4));
+                dc.setValorTotalPagar(rs.getDouble(5));
+                dc.setValorPagado(rs.getDouble(6));
+                dc.setPorcIva(rs.getInt(7));
+                dc.setEstado(rs.getString(8));
+                dc.setPeriodo_ini(rs.getDate(9));
+                dc.setPeriodo_fin(rs.getDate(10));
                 lista.add(dc);
             }
         } catch (ClassNotFoundException | SQLException ex) {
@@ -143,6 +159,7 @@ public class DaoDetalleContratoImpl implements DaoDetalleContrato<DetalleContrat
         }
         return lista;
     }
+    
     
     
     public boolean existe(DetalleContrato dc) throws SQLException, ClassNotFoundException {

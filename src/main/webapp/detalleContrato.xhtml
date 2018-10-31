@@ -20,7 +20,7 @@
            <p:messages id="messages" showDetail="true" closable="true">
                 
             </p:messages>
-           <p:panel header="Registro de Detalles Contrato">
+           <p:panel header="Asignacion de conceptos">
                 <f:facet name="footer"> 
                     <p:commandButton title="Guardar" disabled="#{detalleContratoBean.modoInsert}" icon="fa fa-save Fs16 white" update="tabla,@form"  id="btnSave"  actionListener="#{detalleContratoBean.save()}" ></p:commandButton>
                     <p:commandButton title="Actualizar" disabled="#{detalleContratoBean.modoEdit}" icon="fa fa-refresh Fs16 white"      update="tabla,@form"  id="btnUpdate"  actionListener="#{detalleContratoBean.update()}"></p:commandButton>
@@ -29,9 +29,9 @@
                
                <p:panelGrid columns="2" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
                    
-                    <p:outputLabel>Contrato</p:outputLabel>
+                    <p:outputLabel>Contrato:</p:outputLabel>
                     <p:selectOneMenu   filter="true" filterMatchMode="contains"  value="#{detalleContratoBean.detalleContrato.idcontra}" >     
-                        <f:selectItems value="#{contratoBean.lista}" var="detc" itemValue="#{detc.numcontrato}" itemLabel="#{detc.numcontrato}"/>
+                        <f:selectItems value="#{contratoBean.listaContAct}" var="detc" itemValue="#{detc.numcontrato}" itemLabel="#{detc.numcontrato}"/>
                     </p:selectOneMenu>
                  
                     <p:outputLabel>Concepto</p:outputLabel>
@@ -39,8 +39,17 @@
                         <f:selectItems value="#{conceptoBean.lista}" var="conc" itemValue="#{conc.idconcepto}" itemLabel="#{conc.nom_concepto}"/>
                     </p:selectOneMenu>
                   
-                    <p:outputLabel for="valor">Valor</p:outputLabel>
-                    <p:inputNumber id="valor" required="true"  value="#{detalleContratoBean.detalleContrato.valor}" decimalPlaces="0"></p:inputNumber>
+                    <p:outputLabel for="valorMensual">Valor Mensual</p:outputLabel>
+                    <p:inputNumber id="valorMensual" required="true"  value="#{detalleContratoBean.detalleContrato.valorMensual}" decimalPlaces="0"></p:inputNumber>
+                    
+                    <p:outputLabel for="valorTotalPagar">Valor Total Pagar</p:outputLabel>
+                    <p:inputNumber id="valorTotalPagar" required="true"  value="#{detalleContratoBean.detalleContrato.valorTotalPagar}" decimalPlaces="0"></p:inputNumber>
+                    
+                    <p:outputLabel for="valorPagado">Valor Pagado</p:outputLabel>
+                    <p:inputNumber id="valorPagado" required="true"  value="#{detalleContratoBean.detalleContrato.valorPagado}" decimalPlaces="0"></p:inputNumber>
+                
+                    <p:outputLabel for="porcIva">Porcentaje Iva</p:outputLabel>
+                    <p:inputNumber id="porcIva" required="true"  value="#{detalleContratoBean.detalleContrato.porcIva}" decimalPlaces="0"></p:inputNumber>
                     
                     <p:outputLabel for="estado">Estado</p:outputLabel>
                     <p:selectOneMenu id="estado" required="true" value="#{detalleContratoBean.detalleContrato.estado}" style="width:125px">
@@ -58,7 +67,7 @@
              </p:panelGrid>
             </p:panel>
             
-            <p:panel header="Listado de Detalles Contrato">
+            <p:panel header="Listado de Asignacion de conceptos">
                 
                 <h:commandLink immediate="true">
                     <h:graphicImage url="resources/imagenes/PDF.png" />
@@ -81,8 +90,17 @@
                     <p:column headerText="idconc">
                         <h:outputText value="#{item.idconc}"></h:outputText>
                     </p:column>
-                    <p:column headerText="valor">
-                        <h:outputText value="#{item.valor}" ></h:outputText>
+                    <p:column headerText="valor mensual">
+                        <h:outputText value="#{item.valorMensual}" ></h:outputText>
+                    </p:column>
+                    <p:column headerText="valor total pagar">
+                        <h:outputText value="#{item.valorTotalPagar}" ></h:outputText>
+                    </p:column>
+                    <p:column headerText="valor pagado">
+                        <h:outputText value="#{item.valorPagado}" ></h:outputText>
+                    </p:column>
+                    <p:column headerText="% IVA">
+                        <h:outputText value="#{item.porcIva}" ></h:outputText>
                     </p:column>
                     <p:column headerText="estado">
                         <h:outputText value="#{item.estado}" ></h:outputText>
@@ -108,3 +126,4 @@
         </h:form>
     </ui:define>
 </ui:composition>
+

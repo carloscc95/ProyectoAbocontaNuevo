@@ -5,6 +5,7 @@
  */
 package com.demojsf.dao;
 
+
 import java.util.List;
 
 /**
@@ -12,9 +13,13 @@ import java.util.List;
  * @author docente
  * @param <DetalleContrato>
  */
+
+
+//Nueva
+
 public interface DaoDetalleContrato<DetalleContrato> {
     void save(DetalleContrato dc);
     void update(DetalleContrato dc);
     void delete(DetalleContrato dc);
-    List<DetalleContrato> getDetalleContrato();
+    List<DetalleContrato> getDetalleContrato(int idContrato);
 }

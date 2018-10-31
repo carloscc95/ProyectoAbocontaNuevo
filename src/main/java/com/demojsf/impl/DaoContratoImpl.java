@@ -1,4 +1,7 @@
 
+//Nueva
+
+
 package com.demojsf.impl;
 
 import com.demojsf.db.JdbcConnect;
@@ -154,6 +157,34 @@ public class DaoContratoImpl implements DaoContrato<Contrato> {
         }
         return lista;
     }
+    
+    public List<Contrato> getContratoActivos() {
+        List<Contrato> lista = new ArrayList<>();
+        try {
+            Connection connect = JdbcConnect.getConnect();
+            PreparedStatement pst = connect.prepareStatement("Select * from Contrato where estado=\"Activo\" order by 1");
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                 Contrato ct = new Contrato();
+
+                ct.setNumcontrato(rs.getInt(1));
+                ct.setFeccreacion(rs.getDate(2));
+                ct.setFecinicio(rs.getDate(3));
+                ct.setFecvenc(rs.getDate(4));
+                ct.setIdclie(rs.getInt(5));
+                ct.setValor(rs.getDouble(6));
+                ct.setObservacion(rs.getString(7));
+                ct.setEstado(rs.getString(8));
+                ct.setIdpropied(rs.getInt(9));
+                lista.add(ct);
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(DaoContratoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+    
     
      public List<String> ListaClientes() {
         List<String> lista = new ArrayList<>();

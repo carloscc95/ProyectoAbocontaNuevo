@@ -1,3 +1,4 @@
+//Nueva
 
 package com.demojsf.jsf.bean;
 
@@ -47,8 +48,23 @@ public class DetalleContratoJSFManagedBean implements Serializable {
 
     @PostConstruct
     public void iniciar() {
-        lista = dao.getDetalleContrato();
-        detalleContrato.setIdDetalleContratoConcep(lista.size() + 1);
+        lista = dao.getDetalleContrato(detalleContrato.getIdcontra());
+        
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println(detalleContrato.getIdcontra());
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        
+        
+        //detalleContrato.setIdDetalleContratoConcep(lista.size() + 1);
+        //Nueva
     }
 
     public List<DetalleContrato> getLista() {
@@ -69,7 +85,7 @@ public class DetalleContratoJSFManagedBean implements Serializable {
     public void save() {
 
         dao.save(detalleContrato);
-        lista = dao.getDetalleContrato();
+        lista = dao.getDetalleContrato(detalleContrato.getIdcontra());
         detalleContrato = new DetalleContrato();
         detalleContrato.setIdDetalleContratoConcep(lista.size() + 1);
     }
@@ -77,7 +93,7 @@ public class DetalleContratoJSFManagedBean implements Serializable {
     public void delete() {
 
         dao.delete(detalleContrato);
-        lista = dao.getDetalleContrato();
+        lista = dao.getDetalleContrato(detalleContrato.getIdcontra());
         detalleContrato = new DetalleContrato();
         detalleContrato.setIdDetalleContratoConcep(lista.size() + 1);
         modoEdit = true;
@@ -87,7 +103,7 @@ public class DetalleContratoJSFManagedBean implements Serializable {
     public void update() {
 
         dao.update(detalleContrato);
-        lista = dao.getDetalleContrato();
+        lista = dao.getDetalleContrato(detalleContrato.getIdcontra());
         detalleContrato = new DetalleContrato();
         detalleContrato.setIdDetalleContratoConcep(lista.size() + 1);
         modoEdit = true;

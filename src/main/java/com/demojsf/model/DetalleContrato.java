@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author docente
  */
-
+//Nueva
     
  public class DetalleContrato {
 
@@ -20,10 +20,47 @@ import java.util.Date;
     private int idDetalleContratoConcep;
     private int idcontra;
     private int idconc;
-    private double valor;
+    private double valorMensual;
+    private double valorPagado;
+     private double valorTotalPagar;
+    private int porcIva;
     private String estado;
     private Date periodo_ini;
     private Date periodo_fin;
+
+    public double getValorTotalPagar() {
+        return valorTotalPagar;
+    }
+
+    public void setValorTotalPagar(double valorTotalPagar) {
+        this.valorTotalPagar = valorTotalPagar;
+    }
+   
+
+    public double getValorMensual() {
+        return valorMensual;
+    }
+
+    public void setValorMensual(double valorMensual) {
+        this.valorMensual = valorMensual;
+    }
+
+    public double getValorPagado() {
+        return valorPagado;
+    }
+
+    public void setValorPagado(double valorPagado) {
+        this.valorPagado = valorPagado;
+    }
+
+    public int getPorcIva() {
+        return porcIva;
+    }
+
+    public void setPorcIva(int porcIva) {
+        this.porcIva = porcIva;
+    }
+    
 
     public int getIdDetalleContratoConcep() {
         return idDetalleContratoConcep;
@@ -37,10 +74,7 @@ import java.util.Date;
         return idconc;
     }
 
-    public double getValor() {
-        return valor;
-    }
-
+    
     public String getEstado() {
         return estado;
     }
@@ -65,9 +99,7 @@ import java.util.Date;
         this.idconc = idconc;
     }
 
-    public void setValor(double valor) {
-        this.valor = valor;
-    }
+   
 
     public void setEstado(String estado) {
         this.estado = estado;
@@ -87,7 +119,10 @@ import java.util.Date;
     public String toString() {
         return "DetalleContrato{" + "idDetalleContratoConcep=" + idDetalleContratoConcep 
                 + ", idcontra=" + idcontra + ", idconc=" + idconc 
-                + ", valor=" + valor + ", estado=" + estado +", periodo_ini=" + periodo_ini + ", periodo_fin=" + periodo_fin +'}';
+                + ", valorMensual=" + valorMensual  + ", valorPagado=" + valorPagado 
+                + ", valorTotalPagar=" + valorTotalPagar 
+                + ", porcIva=" + porcIva  +  ", estado=" + estado 
+                +  ", periodo_ini=" + periodo_ini + ", periodo_fin=" + periodo_fin +'}';
     }
     
     

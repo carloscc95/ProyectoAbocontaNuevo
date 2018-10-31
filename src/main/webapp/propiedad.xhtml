@@ -109,8 +109,8 @@
                     <p:outputLabel for="est_ocupacion">Estado de Ocupacion</p:outputLabel>
                     <p:selectOneMenu id="est_ocupacion" required="true" value="#{propiedadBean.propiedad.est_ocupacion}" style="width:110px">
                        <f:selectItem itemLabel="Seleccione" itemValue="" />
-                       <f:selectItem itemLabel="Ocupado" itemValue="o" />
-                       <f:selectItem itemLabel="Desocupado" itemValue="d" />
+                       <f:selectItem itemLabel="Ocupado" itemValue="O" />
+                       <f:selectItem itemLabel="Desocupado" itemValue="D" />
                        
                        <f:validateLength maximum="1" />
                     </p:selectOneMenu>
@@ -138,55 +138,55 @@
     
                 <p:dataTable  paginator="true" rows="10" emptyMessage="No hay propiedades creadas" id="tabla" value="#{propiedadBean.lista}" var="item">
                     
-                   <p:column  headerText="codigo">
+                   <p:column  headerText="Codigo">
                         <h:outputText value="#{item.codigo}"></h:outputText>
                     </p:column>
-                    <p:column headerText="nombre">
+                    <p:column headerText="Nombre">
                         <h:outputText value="#{item.nombre}"></h:outputText>
                     </p:column>
-                    <p:column headerText="pais">
+                    <p:column headerText="Pais">
                         <h:outputText value="#{item.pais}"></h:outputText>
                     </p:column>
-                    <p:column headerText="ciudad">
+                    <p:column headerText="Ciudad">
                         <h:outputText value="#{item.ciudad}" ></h:outputText>
                     </p:column>
-                    <p:column  headerText="barrio">
+                    <p:column  headerText="Barrio">
                         <h:outputText value="#{item.barrio}"></h:outputText>
                     </p:column>
-                    <p:column  headerText="sector">
+                    <p:column  headerText="Sector">
                         <h:outputText value="#{item.sector}"></h:outputText>
                     </p:column>
-                    <p:column headerText="zona">
+                    <p:column headerText="Zona">
                         <h:outputText value="#{item.zona}"></h:outputText>
                     </p:column>
-                    <p:column headerText="direccion">
+                    <p:column headerText="Direccion">
                         <h:outputText value="#{item.direccion}" ></h:outputText>
                     </p:column>
-                    <p:column  headerText="area_tot">
+                    <p:column  headerText="Area Total">
                         <h:outputText value="#{item.area_tot}"></h:outputText>
                     </p:column>
-                    <p:column  headerText="area_cons">
+                    <p:column  headerText="A. Contruida">
                         <h:outputText value="#{item.area_cons}"></h:outputText>
                     </p:column>
-                    <p:column headerText="estrato">
+                    <p:column headerText="Estrato">
                         <h:outputText value="#{item.estrato}"></h:outputText>
                     </p:column>
-                    <p:column headerText="tipo">
+                    <p:column headerText="Tipo">
                         <h:outputText value="#{item.tipo}" ></h:outputText>
                     </p:column>
-                    <p:column  headerText="valor">
+                    <p:column  headerText="Valor">
                         <h:outputText value="#{item.valor}"></h:outputText>
                     </p:column>
-                    <p:column  headerText="observacion">
+                    <p:column  headerText="Observacion">
                         <h:outputText value="#{item.observacion}"></h:outputText>
                     </p:column>
-                    <p:column headerText="est_ocupacion">
+                    <p:column headerText="Estado Ocupacion">
                         <h:outputText value="#{item.est_ocupacion}"></h:outputText>
                     </p:column>
-                   <p:column sortBy="#{item.idpropietario}" headerText="idpropietario">
-                        <h:outputText value="#{item.idpropietario}"></h:outputText>
+                    <p:column sortBy="#{item.nombrePropt}" headerText="Propietario">
+                        <h:outputText value="#{item.nombrePropt}"></h:outputText>
                     </p:column>
-                    <p:column sortBy="#{item.idpropiedad}" headerText="idpropiedad">
+                    <p:column sortBy="#{item.idpropiedad}" headerText="IdPropiedad">
                         <h:outputText value="#{item.idpropiedad}"></h:outputText>
                     </p:column>
                     

@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.model.chart.Axis;
@@ -49,11 +50,23 @@ public class InfoVentasJSFManagedBean implements Serializable {
         this.Mes_Fin = Mes_Fin;
     }
     
-  
+  @PostConstruct
+    public void iniciar() {
+        Mes_Ini=1;
+        Mes_Fin=12;
+        lista = dao.InfoVenta(Mes_Ini, Mes_Fin);
+        createBarModel();
+    }
+
+    
+   
+    
     
     public void generarInforme() {
         //dao.InfoVenta(Mes_Ini,Mes_Fin);
         lista = dao.InfoVenta(Mes_Ini, Mes_Fin);
+        
+        createBarModel();
     }
 
     public List<Infoventas> getLista() {
@@ -72,7 +85,7 @@ public class InfoVentasJSFManagedBean implements Serializable {
         BarChartModel model = new BarChartModel();
         
         InfoData = new ChartSeries();
-        InfoData.setLabel("ValorTtotal");
+        InfoData.setLabel("valorTotal");
         valorMax = 0;
         for (Infoventas cData: lista){
             if(cData.getValorTotal() > valorMax ){

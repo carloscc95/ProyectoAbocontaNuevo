@@ -40,11 +40,40 @@ public class ConceptoJpaController implements Serializable {
         this.emf = emf;
     }
     private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
+  /*  private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
+    }*/
+    
+    private static EntityManagerFactory emf;
+
+    static {
+        setEmf(Persistence.createEntityManagerFactory("org.primefaces_sentinel_war_2.1.2PU"));
     }
+
+    /**
+     * @return the emf
+     */
+    public static EntityManagerFactory getEmf() {
+        return emf;
+    }
+
+    /**
+     * @param aEmf the emf to set
+     */
+    public static void setEmf(EntityManagerFactory aEmf) {
+        emf = aEmf;
+    }
+
+
+    public static EntityManager getEntityManager() {
+        return getEmf().createEntityManager();
+    }
+    
+    
+    
+    
     
     /*@Resource
     private UserTransaction utx = null;

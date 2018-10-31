@@ -25,7 +25,8 @@
 
                   <p:panel header="Informe de ventas">
                       <f:facet name="footer">  
-                          <p:commandButton title="Generar" icon="fa fa-gears Fs16 white" update="tabla,@form"  id="btnSave"  actionListener="#{infoventasBean.generarInforme}" ></p:commandButton>                   
+                          <p:commandButton title="Generar" icon="fa fa-gears Fs16 white" update="tabla,@form,Graf"  id="btnSave"  actionListener="#{infoventasBean.generarInforme}" ></p:commandButton>     
+                             
                 </f:facet>
                       
                     <p:panelGrid columns="4" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
@@ -52,7 +53,7 @@
                 </h:commandLink>
                 
           
-                <p:dataTable  paginator="true" rows="2" emptyMessage="No hay informes generados" id="tabla" value="#{infoventasBean.lista}" var="item">
+                <p:dataTable    rows="12"  emptyMessage="No hay informes generados" id="tabla" value="#{infoventasBean.lista}" var="item">
                     
                    
                     <p:column headerText="Fecha Factura">
@@ -61,9 +62,11 @@
                     <p:column  headerText="Valor">
                         <h:outputText value="#{item.valorTotal}"></h:outputText>
                     </p:column>
-                      
+                        
                 </p:dataTable>
-                         
+                
+                <p:chart id="Graf" type="bar" model="#{infoventasBean.barModel}" style="height:300px" /> 
+                
             </p:panel>
         </h:form>
     </ui:define>

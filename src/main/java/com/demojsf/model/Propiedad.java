@@ -20,7 +20,17 @@ public class Propiedad {
     private String est_facturacion;
     private int idpropietario;
     private int idpropiedad;
+    private String NombrePropt;
 
+    public String getNombrePropt() {
+        return NombrePropt;
+    }
+
+    public void setNombrePropt(String NombrePropt) {
+        this.NombrePropt = NombrePropt;
+    }
+    
+ 
     public String getCodigo() {
         return codigo;
     }

@@ -31,11 +31,11 @@ public class DaoConceptoImpl implements DaoConcepto<Concepto> {
             connect = JdbcConnect.getConnect();
 
             PreparedStatement pst = connect.
-                    prepareStatement("Insert into Concepto (idconcepto,cod_concepto,nom_concepto,porcentaje_iva) values(?,?,?,?)");
-            pst.setInt(1, c.getIdconcepto());
-            pst.setString(2, c.getCod_concepto());
-            pst.setString(3, c.getNom_concepto());
-            pst.setInt(4, c.getPorcentaje_iva());
+                    prepareStatement("Insert into Concepto (cod_concepto,nom_concepto,porcentaje_iva) values(?,?,?)");
+
+            pst.setString(1, c.getCod_concepto());
+            pst.setString(2, c.getNom_concepto());
+            pst.setInt(3, c.getPorcentaje_iva());
             pst.executeUpdate();
             connect.commit();
         } catch (ClassNotFoundException | SQLException ex) {

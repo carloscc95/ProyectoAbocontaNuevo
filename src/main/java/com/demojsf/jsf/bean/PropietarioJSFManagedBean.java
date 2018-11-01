@@ -119,6 +119,10 @@ public class PropietarioJSFManagedBean implements Serializable {
             PropiData.set(cData.getNombre(), cData.getPorccomi());
         }
         
+        if(valorMax==0){ 
+            PropiData.set(0, 0);
+        }
+        
         model.addSeries(PropiData);
         
         return model;

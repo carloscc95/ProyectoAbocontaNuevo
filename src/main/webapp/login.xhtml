@@ -104,9 +104,7 @@
 
         <div class="Container"> <!-- style="opacity: 0.9" -->
             <div class="Container80 MaxWid500 Fnone MarAuto TexAlCenter PaddingTopPercent10">
-                <a href="" id="login-logo">
-                    <h:graphicImage name="images/log_new.png" styleClass="Fleft" library="sentinel-layout"/>
-                </a>
+                
                 <div class="EmptyBox10"></div>
             </div>
 
@@ -122,7 +120,10 @@
                     
                     <div class="Container90 Fnone MarAuto TexAlCenter TabContent OvHidden" id="TAB1">
                         <h:form id="loginForm">
-                        <div class="EmptyBox50"></div>
+                            <a href="" id="login-logo">
+                                <h:graphicImage name="images/log_new.png" styleClass="Fleft" library="sentinel-layout"/>
+                            </a>
+                       <!-- <div class="EmptyBox50"></div>-->
                         <p:inputText id="username" value="#{login.user}" required="true" placeholder="E-Mail" styleClass="Container80 Fnone MarAuto Fs18" />
                         <p:message for="username"></p:message>
                         <div class="EmptyBox10"></div>

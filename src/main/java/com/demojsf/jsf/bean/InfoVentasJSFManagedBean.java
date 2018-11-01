@@ -94,6 +94,10 @@ public class InfoVentasJSFManagedBean implements Serializable {
             InfoData.set(cData.getMes(), cData.getValorTotal());
         }
         
+        if(valorMax==0){ 
+            InfoData.set(0, 0);
+        }
+        
         model.addSeries(InfoData);
         
         return model;

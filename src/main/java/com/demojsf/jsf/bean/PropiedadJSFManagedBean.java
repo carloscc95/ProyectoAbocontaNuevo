@@ -121,6 +121,9 @@ public class PropiedadJSFManagedBean implements Serializable {
             PropiedData.set(cData.getTipo(), cData.getValor());
         }
         
+        if(valorMax==0){ 
+            PropiedData.set(0, 0);
+        }
         model.addSeries(PropiedData);
         
         return model;

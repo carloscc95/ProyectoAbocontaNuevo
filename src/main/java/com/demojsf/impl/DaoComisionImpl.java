@@ -33,8 +33,10 @@ public class DaoComisionImpl implements DaoComision<Comision> {
             
             Comision comi = new Comision();
              
-            if (existeLiqPeriodo(periodo)){// Aquies donde vas a preguntar la validacion que te dice carlos
-            
+            if (existeLiqPeriodo(periodo)){// Aqui es donde vas a preguntar la validacion que te dice carlos
+                
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existente!", "Periodo ya liquidado...."));
+                
                 //aqui vas a lanzar pregunta si desea continuar, preguntale a carlos como se lanza el mensaje que el ya sabe
                 
                 //aqui haces condicional, preguntas si colocaron continuar o no
@@ -139,7 +141,7 @@ public class DaoComisionImpl implements DaoComision<Comision> {
             Logger.getLogger(DaoFacturaImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+                    
     @Override
     public void save(Comision c) {
         try {
@@ -225,10 +227,11 @@ public class DaoComisionImpl implements DaoComision<Comision> {
         try {
 
             connect = JdbcConnect.getConnect();
+            int periodo = 0;
 
-            PreparedStatement pst = connect.prepareStatement("Delete from Comision where idcomision=?");
+            PreparedStatement pst = connect.prepareStatement("Delete from Comision where periodo_comi = '" + periodo + "'");
             
-            pst.setInt(1, c.getIdcomision());
+            pst.setInt(1, c.getPeriodo_comi());
             
             pst.executeUpdate();
             
@@ -244,7 +247,6 @@ public class DaoComisionImpl implements DaoComision<Comision> {
             Logger.getLogger(DaoComisionImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     
     @Override
     public List<Comision> getComision() {

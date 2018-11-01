@@ -81,7 +81,11 @@ public class DetalleContratoJSFManagedBean implements Serializable {
 
     public DetalleContratoJSFManagedBean() {
     }
-
+    
+    public void cambioContrato() {
+        lista = dao.getDetalleContrato(detalleContrato.getIdcontra());
+    }
+    
     public void save() {
 
         dao.save(detalleContrato);

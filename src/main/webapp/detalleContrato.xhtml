@@ -31,7 +31,9 @@
                    
                     <p:outputLabel>Contrato:</p:outputLabel>
                     <p:selectOneMenu   filter="true" filterMatchMode="contains"  value="#{detalleContratoBean.detalleContrato.idcontra}" >     
+                        <f:selectItem itemLabel="Seleccione" itemValue="0"/>
                         <f:selectItems value="#{contratoBean.listaContAct}" var="detc" itemValue="#{detc.numcontrato}" itemLabel="#{detc.numcontrato}"/>
+                        <f:ajax event="change" listener="#{detalleContratoBean.cambioContrato()}" render="tabla" execute="@this"/>
                     </p:selectOneMenu>
                  
                     <p:outputLabel>Concepto</p:outputLabel>

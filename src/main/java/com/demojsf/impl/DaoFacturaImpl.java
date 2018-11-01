@@ -163,6 +163,20 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
                     //y tambien se realiza el INSERT correspondiente despues de llenar los datos, con el metodo executeUpdate()
                     pstInsertar_Facturas.executeUpdate();
                     
+                    int autoIncKeyFromFunc = -1;
+                    ResultSet rs;
+
+                    Statement pstUltimoIdFact = connect.createStatement();;
+
+                    rs = pstUltimoIdFact.executeQuery("SELECT LAST_INSERT_ID()");
+
+                    if (rs.next()) {
+                        autoIncKeyFromFunc = rs.getInt(1);
+                    } else {
+                        System.out.println("Fallo la consulta del Ultimo ID.....");
+                    }
+                                 
+                    
 
                     //****** Recorrer el detalle de factura ******//
                     PreparedStatement 
@@ -177,20 +191,7 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
                         DetalleFactura detFac=new DetalleFactura();
                         
                         //Llenando detalle de facturas
-                        
-                        int autoIncKeyFromFunc = -1;
-                        ResultSet rs;
-                        
-                        Statement pstUltimoIdFact = connect.createStatement();;
-                        
-                        rs = pstUltimoIdFact.executeQuery("SELECT LAST_INSERT_ID()");
 
-                        if (rs.next()) {
-                            autoIncKeyFromFunc = rs.getInt(1);
-                        } else {
-                            // throw an exception from here
-                        }
-                        
                         detFac.setIdFact(autoIncKeyFromFunc);//fac.getIdfactura());
                         detFac.setIdConc(rsDetaContra.getInt(1));
                         detFac.setNomConc(rsDetaContra.getString(2));

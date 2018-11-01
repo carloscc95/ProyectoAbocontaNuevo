@@ -21,7 +21,13 @@
                 <f:facet name="footer">
                     <p:commandButton title="Guardar" disabled="#{configBean.modoInsert}" icon="fa fa-save Fs16 white" update="tabla,@form"  id="btnSave"  actionListener="#{configBean.save()}" ></p:commandButton>
                     <p:commandButton title="Actualizar" disabled="#{configBean.modoEdit}" icon="fa fa-refresh Fs16 white" update="tabla,@form"  id="btnUpdate"  actionListener="#{configBean.update()}"></p:commandButton>
-                    <p:commandButton title="Eliminar" disabled="#{configBean.modoEdit}" icon="fa fa-trash Fs16 white" update="tabla,@form" id="btnDelete" actionListener="#{configBean.delete()}"></p:commandButton>
+                    <p:commandButton title="Eliminar" disabled="#{configBean.modoEdit}" icon="fa fa-trash Fs16 white" update="tabla,@form" id="btnDelete" actionListener="#{configBean.delete()}">
+                       <p:confirm header="Confirmacion" message="Realmente desea eliminar?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" actionListener="#{configBean.delete()}"  icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
                     
                </f:facet>
                

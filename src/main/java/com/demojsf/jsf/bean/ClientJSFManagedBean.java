@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
@@ -86,18 +88,20 @@ public class ClientJSFManagedBean implements Serializable {
         modoInsert = false;
     }
 
-    public void update() {
-
+    public void update() {       
         dao.update(cliente);
         lista = dao.getCliente();
         cliente = new Cliente();
         cliente.setIdcliente(lista.size() + 1);
         modoEdit = true;
         modoInsert = false;
+       
     }
 
     public void changeMode() {
         modoEdit = false;
         modoInsert = true;
     }
+    
+    
 }

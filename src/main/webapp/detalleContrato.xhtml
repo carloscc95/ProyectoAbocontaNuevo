@@ -24,7 +24,13 @@
                 <f:facet name="footer"> 
                     <p:commandButton title="Guardar" disabled="#{detalleContratoBean.modoInsert}" icon="fa fa-save Fs16 white" update="tabla,@form"  id="btnSave"  actionListener="#{detalleContratoBean.save()}" ></p:commandButton>
                     <p:commandButton title="Actualizar" disabled="#{detalleContratoBean.modoEdit}" icon="fa fa-refresh Fs16 white"      update="tabla,@form"  id="btnUpdate"  actionListener="#{detalleContratoBean.update()}"></p:commandButton>
-                    <p:commandButton title="Eliminar" disabled="#{detalleContratoBean.modoEdit}" icon="fa fa-trash Fs16 white" update="tabla,@form"  id="btnDelete"  actionListener="#{detalleContratoBean.delete()}"></p:commandButton>
+                    <p:commandButton title="Eliminar" disabled="#{detalleContratoBean.modoEdit}" icon="fa fa-trash Fs16 white" update="tabla,@form"  id="btnDelete"  actionListener="#{detalleContratoBean.delete()}">
+                        <p:confirm header="Confirmacion" message="Realmente desea eliminar?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" actionListener="#{detalleContratoBean.delete()}"  icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
                 </f:facet>
                
                <p:panelGrid columns="2" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">

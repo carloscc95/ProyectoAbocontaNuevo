@@ -28,6 +28,21 @@ public class DaoComisionImpl implements DaoComision<Comision> {
         
             connect = JdbcConnect.getConnect();
             
+            
+            Comision comi = new Comision();
+             
+            if (periodo != comi.getPeriodo_comi()){
+                PreparedStatement pstComision = connect.prepareStatement("SELECT c.periodo_comi" 
+                                                                         + "FROM comision c " 
+                                                                         + "where c.periodo_comi = '" + periodo+ "'");
+            } else {
+            
+                System.out.println("Ya existe una liquidacion para ese periodo.");
+                
+            }
+            
+            
+            
             //Buscamos los contratos activos 
             PreparedStatement pstContratos = connect.prepareStatement("SELECT c.numcontrato, c.idpropied, pt.idpropietario, pt.porccomi, c.valor "
                                                                     + " FROM contrato c "
@@ -46,7 +61,7 @@ public class DaoComisionImpl implements DaoComision<Comision> {
                 while (rsContratos.next()) {
 
                     //Creamos y preparamos el objeto comision con toda la informacion
-                    Comision comi = new Comision();
+                    //Comision comi = new Comision();
 
                     //comi.setFecha_reg(new Date()); //Fecha actual del PC
                     comi.setPeriodo_comi(periodo); //Variable que pasa por parametro

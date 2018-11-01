@@ -21,6 +21,7 @@ public class ComisionJSFManagedBean implements Serializable {
 
     private Comision comision = new Comision();
     private List<Comision> lista = new ArrayList<>();
+    //private ListCargar<Comision> lista = new ArrayList<>();
     private DaoComisionImpl dao = new DaoComisionImpl();
     private boolean modoInsert = false;
     private boolean modoEdit = true;
@@ -71,6 +72,14 @@ public class ComisionJSFManagedBean implements Serializable {
     public void setLista(List<Comision> lista) {
         this.lista = lista;
     }
+    
+    /*public ListCargar<Comision> getLista() {
+        return lista;
+    }
+    
+    public void setLista(ListCargar<Comision> lista) {
+        this.lista = lista;
+    }*/
 
     public Comision getComision() {
         return comision;
@@ -89,7 +98,7 @@ public class ComisionJSFManagedBean implements Serializable {
         //dao.save(comision);
         lista = dao.getComision();
         comision = new Comision();
-//        comision.setIdcomision(lista.size() + 1);
+        //comision.setIdcomision(lista.size() + 1);
     }
     
     public void delete() {

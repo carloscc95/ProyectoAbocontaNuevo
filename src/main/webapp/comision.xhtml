@@ -25,6 +25,20 @@
                     <p:inputText id="periodo_comi" placeholder="Periodo a liquidar" value="#{comisionBean.periodo}" ></p:inputText>
                     <p:commandButton title="Liquidar" disabled="#{comisionBean.modoInsert}" icon="fa fa-flash Fs16 white" update="tabla,@form" id="btnLiquidar" actionListener="#{comisionBean.save()}" ></p:commandButton>
                 
+                    
+                    
+                    <p:commandButton title="Eliminar" disabled="#{contratoBean.modoEdit}"  icon="fa fa-trash Fs16 white" update="tabla,@form" id="bntDelete" actionListener="#{comisionBean.delete()}">
+                         <p:confirm header="Confirmacion" message="Realmente desea eliminar?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" actionListener="#{comisionBean.delete()}"  icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                                 
+                    
+                    
+                    
+                    
                 </p:panelGrid>    
             </p:panel>
                                  

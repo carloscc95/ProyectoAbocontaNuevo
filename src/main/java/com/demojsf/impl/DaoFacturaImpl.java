@@ -10,8 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -64,11 +68,15 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
                 pstInsDetFac = connect.prepareStatement("Insert into detalle_factura(idfactu,idconc,nom_concepto,precio,valor_ant_iva,"
                         + "porcentaje_iva,valor_iva,fecha_registro) values(?,?,?,?,?,?,?,?)");
             
-            //OJO QUITAR ESTE SYSTEM.OUT
-            //System.out.println("OJO!!!!... Si entroooo..... 2");
             
             
-        
+            PreparedStatement pstUpdateFactura = connect.
+                    prepareStatement("Update factura set valor_otros= valor_otros + ?, valor_iva= valor_iva + ?, valor_total=valor_total+?"
+                            + ",valor_saldo_cxc = valor_saldo_cxc + ? where idfactura = ?"); 
+            
+            PreparedStatement pstUpdateConfig = connect.
+                    prepareStatement("Update config set num_cons_fact=? "); 
+
             try{
                 
                 //Buscamos la informacion de la tabla config
@@ -123,63 +131,11 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
                     fac.setCod_propiedad(rsContratos.getInt(3));
                     
                     fac.setValorCanon(rsContratos.getDouble(4));
+                    
+                    fac.setValorOtros(0);
+                    fac.setValorIva(0);
 
-                    //****** Recorrer el detalle de factura ******//
-                    PreparedStatement 
-                            pstDetaContra = connect.prepareStatement("Select d.idconc,c.nom_concepto,d.valor,d.porc_iva "
-                                    + " from detallecontrato d "
-                                    + " Inner join concepto c on  d.idconc = c.idconcepto "
-                                    + " where d.idcontra="+fac.getNum_contrato()+" order by 2");
-                    
-                    ResultSet rsDetaContra = pstDetaContra.executeQuery();
-                                        
-                    while (rsDetaContra.next()) {
-                        DetalleFactura detFac=new DetalleFactura();
-                        
-                        //Llenando detalle de facturas
-                        detFac.setIdFact(fac.getIdfactura());
-                        detFac.setIdConc(rsDetaContra.getInt(1));
-                        detFac.setNomConc(rsDetaContra.getString(2));
-                        
-                        detFac.setPrecio(rsDetaContra.getDouble(3));
-                        detFac.setValorIva(rsDetaContra.getDouble(3)*rsDetaContra.getInt(4)/100);
-                        detFac.setPorcIva(rsDetaContra.getInt(4));
-                        
-                        detFac.setValorAntIva(rsDetaContra.getDouble(3));
-                        detFac.setFechaReg(fac.getFecha_creacion());
-                        
-                        //insertando los datos en detalle de facturas
-                        
-                        //-----------------------> OJO!!! <-----------------------//
-                        //-----------------------> OJO!!! <-----------------------//
-                        //-----------------------> OJO!!! <-----------------------//
-                        //-----------------------> OJO!!! <-----------------------//
-                        //-----------------------> OJO!!! <-----------------------//
-                        //-----------------------> OJO!!! <-----------------------//
-                        //------------------------>   |   <-----------------------//
-                        //------------------------>   |   <-----------------------//
-                        //------------------------>   V   <-----------------------//
-                        //OJO, HAY QUE CAMBIAR EL ID DE LA FACTURA
-                        pstInsDetFac.setInt(1,  detFac.getIdFact());//OJO AQUI NO ESTA EL ID DE LA FACTURA, PORQUE AUN NO SE HA GUARDADO EN LA DB
-                        pstInsDetFac.setInt(2,  detFac.getIdConc());
-                        pstInsDetFac.setString(3,  detFac.getNomConc());
-                        pstInsDetFac.setDouble(4,  detFac.getPrecio());
-                        pstInsDetFac.setDouble(5,  detFac.getValorAntIva());
-                        pstInsDetFac.setInt(6,  detFac.getPorcIva());
-                        pstInsDetFac.setDouble(7,  detFac.getValorIva());
-                        pstInsDetFac.setTimestamp(8, new Timestamp(detFac.getFechaReg().getTime()));
-                        pstInsDetFac.executeUpdate();
-                        
-                        //Sumando el valor de los conceptos y del iva de los mismos en la factura
-                        fac.setValorOtros(fac.getValorOtros()+detFac.getPrecio());
-                        fac.setValorIva(fac.getValorIva()+detFac.getValorIva());
-                        
-                    }
-                    
-                        
-                    //****************************************** fin recorrer detalle factura ******************************************
-                        
-                    fac.setValorTotal(fac.getValorCanon()+fac.getValorOtros()+fac.getValorIva());
+                    fac.setValorTotal(fac.getValorCanon());
                     fac.setSaldoCXC(fac.getValorTotal());
                     
                     fac.setEstado_factura("Activo");
@@ -207,7 +163,81 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
                     //y tambien se realiza el INSERT correspondiente despues de llenar los datos, con el metodo executeUpdate()
                     pstInsertar_Facturas.executeUpdate();
                     
+
+                    //****** Recorrer el detalle de factura ******//
+                    PreparedStatement 
+                            pstDetaContra = connect.prepareStatement("Select d.idconc,c.nom_concepto,d.valor,d.porc_iva "
+                                    + " from detallecontrato d "
+                                    + " Inner join concepto c on  d.idconc = c.idconcepto "
+                                    + " where d.idcontra="+fac.getNum_contrato()+" order by 2");
+                    
+                    ResultSet rsDetaContra = pstDetaContra.executeQuery();
+                                        
+                    while (rsDetaContra.next()) {
+                        DetalleFactura detFac=new DetalleFactura();
+                        
+                        //Llenando detalle de facturas
+                        
+                        int autoIncKeyFromFunc = -1;
+                        ResultSet rs;
+                        
+                        Statement pstUltimoIdFact = connect.createStatement();;
+                        
+                        rs = pstUltimoIdFact.executeQuery("SELECT LAST_INSERT_ID()");
+
+                        if (rs.next()) {
+                            autoIncKeyFromFunc = rs.getInt(1);
+                        } else {
+                            // throw an exception from here
+                        }
+                        
+                        detFac.setIdFact(autoIncKeyFromFunc);//fac.getIdfactura());
+                        detFac.setIdConc(rsDetaContra.getInt(1));
+                        detFac.setNomConc(rsDetaContra.getString(2));
+                        
+                        detFac.setPrecio(rsDetaContra.getDouble(3));
+                        detFac.setValorIva(rsDetaContra.getDouble(3)*rsDetaContra.getInt(4)/100);
+                        detFac.setPorcIva(rsDetaContra.getInt(4));
+                        
+                        detFac.setValorAntIva(rsDetaContra.getDouble(3));
+                        detFac.setFechaReg(fac.getFecha_creacion());
+                        
+                        //insertando los datos en detalle de facturas
+                        
+                       //OJO, HAY QUE CAMBIAR EL ID DE LA FACTURA
+                        pstInsDetFac.setInt(1,  detFac.getIdFact());//OJO AQUI NO ESTA EL ID DE LA FACTURA, PORQUE AUN NO SE HA GUARDADO EN LA DB
+                        pstInsDetFac.setInt(2,  detFac.getIdConc());
+                        pstInsDetFac.setString(3,  detFac.getNomConc());
+                        pstInsDetFac.setDouble(4,  detFac.getPrecio());
+                        pstInsDetFac.setDouble(5,  detFac.getValorAntIva());
+                        pstInsDetFac.setInt(6,  detFac.getPorcIva());
+                        pstInsDetFac.setDouble(7,  detFac.getValorIva());
+                        pstInsDetFac.setTimestamp(8, new Timestamp(detFac.getFechaReg().getTime()));
+                        
+                        pstInsDetFac.executeUpdate();
+                        
+                        
+                        //Actualizamos campos de la tabla factura
+                        pstUpdateFactura.setDouble(1, detFac.getPrecio());
+                        pstUpdateFactura.setDouble(2, detFac.getPorcIva());
+                        pstUpdateFactura.setDouble(3, detFac.getPrecio() + detFac.getPorcIva());
+                        pstUpdateFactura.setDouble(4, detFac.getPrecio() + detFac.getPorcIva());
+                        pstUpdateFactura.setInt(5, detFac.getIdFact());
+                        
+                        pstUpdateFactura.executeUpdate();
+                        
+                        
+                    }
+
+                    //****************************************** fin recorrer detalle factura ******************************************
+                    
+                    
                 }
+                
+                //actualizamos numero del consecutivo en facturas
+                pstUpdateConfig.setInt(1,consecutivo_fact);
+                
+                pstUpdateConfig.executeUpdate();
                 
                 connect.commit();
                 
@@ -347,12 +377,20 @@ public class DaoFacturaImpl implements DaoFactura<Factura> {
         List<Factura> lista = new ArrayList<>();
         try {
             Connection connect = JdbcConnect.getConnect();
-            PreparedStatement pst = connect.prepareStatement("Select idcontra,cons_factura,prefijo,resDian,factAutori,"
-                        + "fecha_creacion,fecha_facturacion,fecha_vencFact,dias,observacion,idclie,idpropied,valor_canon,valor_otros,valor_iva,"
-                        + "valor_total,valor_saldo_cxc,estado_factura from Factura where fecha_facturacion= "+ fecha_fac.getTime() +" order by 2");
+            
+            DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+            
+            PreparedStatement pst = connect.prepareStatement("Select idcontra,cons_factura,prefijo,resDian,factAutori, "
+                    + "fecha_creacion,fecha_facturacion,fecha_vencFact,dias,observacion,idclie,idpropied,valor_canon "
+                    + ",valor_otros,valor_iva,valor_total,valor_saldo_cxc,estado_factura "
+                    + " from Factura "
+                    + " where fecha_facturacion= '"+ formatoFecha.format(fecha_fac)+"' order by 2");
+           
+
+            
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Factura fac = new Factura();
+                Factura fac = new Factura();          
                 
                 fac.setNum_contrato(rs.getInt(1));
                 fac.setCons_factura(rs.getInt(2));

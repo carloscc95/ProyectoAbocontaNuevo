@@ -128,7 +128,6 @@ public class FacturaJSFManagedBean implements Serializable {
     public void iniciar() {
         lista = dao.getFact(fec_factu);
         listafactu = dao.getListFact();
-        factura.setIdfactura(lista.size() + 1);
     }
 
     public List<Factura> getFilteredFactura() {

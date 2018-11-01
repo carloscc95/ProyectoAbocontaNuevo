@@ -25,92 +25,104 @@ public class DaoComisionImpl implements DaoComision<Comision> {
      
         Connection connect = null;
         try {
-        
+            
+            boolean continuar=true;
+            
             connect = JdbcConnect.getConnect();
             
             
             Comision comi = new Comision();
              
-            if (periodo != comi.getPeriodo_comi()){
-                PreparedStatement pstComision = connect.prepareStatement("SELECT c.periodo_comi" 
-                                                                         + "FROM comision c " 
-                                                                         + "where c.periodo_comi = '" + periodo+ "'");
-            } else {
+            if (existeLiqPeriodo(periodo)){// Aquies donde vas a preguntar la validacion que te dice carlos
             
-                System.out.println("Ya existe una liquidacion para ese periodo.");
+                //aqui vas a lanzar pregunta si desea continuar, preguntale a carlos como se lanza el mensaje que el ya sabe
                 
-            }
-            
-            
-            
-            //Buscamos los contratos activos 
-            PreparedStatement pstContratos = connect.prepareStatement("SELECT c.numcontrato, c.idpropied, pt.idpropietario, pt.porccomi, c.valor "
-                                                                    + " FROM contrato c "
-                                                                    + " inner join propiedad pd on c.idpropied = pd.idpropiedad "
-                                                                    + " inner join propietarios pt on  pd.idpropietario = pt.idpropietario "
-                                                                    + " where c.estado = \"Activo\" order by 1");
-            ResultSet rsContratos = pstContratos.executeQuery();
-            
-            //Preparamos sentncia del insert en la tabla de Comision
-            PreparedStatement pstInsertar_Comision = connect.prepareStatement("Insert into Comision (fecha_reg,periodo_comi,idcontrato,idpropiedad,"
-                        + "idpropietario,observacion,porc_comi,valor_comi,valor_canon,valor_propietario) values(?,?,?,?,?,?,?,?,?,?)");
-            try{
-                connect.setAutoCommit(false);
-
-                //Comenzamos ciclo de los contratos activos
-                while (rsContratos.next()) {
-
-                    //Creamos y preparamos el objeto comision con toda la informacion
-                    //Comision comi = new Comision();
-
-                    //comi.setFecha_reg(new Date()); //Fecha actual del PC
-                    comi.setPeriodo_comi(periodo); //Variable que pasa por parametro
-                    comi.setIdcontrato(rsContratos.getInt(1));
-                    comi.setIdpropiedad(rsContratos.getInt(2));
-                    comi.setIdpropietario(rsContratos.getInt(3));
-                    comi.setObservacion("COMISIÓN CORRESPONDIENTE AL PERIODO "+periodo); //Observacion Automatica
-                    comi.setPorc_comi(rsContratos.getInt(4));
-                    comi.setValor_comi(rsContratos.getDouble(5)*rsContratos.getInt(4)/100); // --->valor_canon*proc_comi/100
-                    comi.setValor_canon(rsContratos.getDouble(5));
-                    comi.setValor_propietario(comi.getValor_canon()-comi.getValor_comi());
-                    
-                    //Colocamos todos los parametros para realizar insert con el objeto pstInsertar_Comision creado arriba
-                    pstInsertar_Comision.setTimestamp(1, new Timestamp(comi.getFecha_reg().getTime()));
-                    pstInsertar_Comision.setInt(2, comi.getPeriodo_comi());
-                    pstInsertar_Comision.setInt(3, comi.getIdcontrato());
-                    pstInsertar_Comision.setInt(4, comi.getIdpropiedad());
-                    pstInsertar_Comision.setInt(5, comi.getIdpropietario());
-                    pstInsertar_Comision.setString(6, comi.getObservacion());
-                    pstInsertar_Comision.setInt(7, comi.getPorc_comi());
-                    pstInsertar_Comision.setDouble (8, comi.getValor_comi());
-                    pstInsertar_Comision.setDouble(9, comi.getValor_canon());
-                    pstInsertar_Comision.setDouble(10, comi.getValor_propietario());
-                    
-                    //y tambien se realiza el INSERT correspondiente despues de llenar los datos, con el metodo executeUpdate()
-                    pstInsertar_Comision.executeUpdate();
-                    
+                //aqui haces condicional, preguntas si colocaron continuar o no
+                //si colocan continuar 
+                /*
+                if(mesaje==NoContinuar){//ojo aqui no va esto... solo que lo puse pa que sepas que alli dentro tienes que preguntar lo que coloquen en el mensaje emergente
+                    continuar=false;
                 }
-                
-                connect.commit();
-                
-            }catch (SQLException e){
-                connect.rollback();
+                */
+            //ya solo eso... creo que no se necesita mas....
 
-                System.out.println("ERROR en consulta SQL.");
-                System.out.println("SQLException: " + e.getMessage());
-                System.out.println("SQLState: " + e.getSQLState());
-                System.out.println("VendorError: " + e.getErrorCode());
+              
             }
-            finally
-            {
-              try
-              {
-                 connect.setAutoCommit(true);
-                 connect.close();
-              }
-               catch (SQLException e) { 
-               
-               }
+            
+            if(continuar){
+            
+            
+                
+
+                //Buscamos los contratos activos 
+                PreparedStatement pstContratos = connect.prepareStatement("SELECT c.numcontrato, c.idpropied, pt.idpropietario, pt.porccomi, c.valor "
+                                                                        + " FROM contrato c "
+                                                                        + " inner join propiedad pd on c.idpropied = pd.idpropiedad "
+                                                                        + " inner join propietarios pt on  pd.idpropietario = pt.idpropietario "
+                                                                        + " where c.estado = \"Activo\" order by 1");
+                ResultSet rsContratos = pstContratos.executeQuery();
+
+                //Preparamos sentncia del insert en la tabla de Comision
+                PreparedStatement pstInsertar_Comision = connect.prepareStatement("Insert into Comision (fecha_reg,periodo_comi,idcontrato,idpropiedad,"
+                            + "idpropietario,observacion,porc_comi,valor_comi,valor_canon,valor_propietario) values(?,?,?,?,?,?,?,?,?,?)");
+                try{
+                    connect.setAutoCommit(false);
+
+                    //Comenzamos ciclo de los contratos activos
+                    while (rsContratos.next()) {
+
+                        //Creamos y preparamos el objeto comision con toda la informacion
+                        //Comision comi = new Comision();
+
+                        //comi.setFecha_reg(new Date()); //Fecha actual del PC
+                        comi.setPeriodo_comi(periodo); //Variable que pasa por parametro
+                        comi.setIdcontrato(rsContratos.getInt(1));
+                        comi.setIdpropiedad(rsContratos.getInt(2));
+                        comi.setIdpropietario(rsContratos.getInt(3));
+                        comi.setObservacion("COMISIÓN CORRESPONDIENTE AL PERIODO "+periodo); //Observacion Automatica
+                        comi.setPorc_comi(rsContratos.getInt(4));
+                        comi.setValor_comi(rsContratos.getDouble(5)*rsContratos.getInt(4)/100); // --->valor_canon*proc_comi/100
+                        comi.setValor_canon(rsContratos.getDouble(5));
+                        comi.setValor_propietario(comi.getValor_canon()-comi.getValor_comi());
+
+                        //Colocamos todos los parametros para realizar insert con el objeto pstInsertar_Comision creado arriba
+                        pstInsertar_Comision.setTimestamp(1, new Timestamp(comi.getFecha_reg().getTime()));
+                        pstInsertar_Comision.setInt(2, comi.getPeriodo_comi());
+                        pstInsertar_Comision.setInt(3, comi.getIdcontrato());
+                        pstInsertar_Comision.setInt(4, comi.getIdpropiedad());
+                        pstInsertar_Comision.setInt(5, comi.getIdpropietario());
+                        pstInsertar_Comision.setString(6, comi.getObservacion());
+                        pstInsertar_Comision.setInt(7, comi.getPorc_comi());
+                        pstInsertar_Comision.setDouble (8, comi.getValor_comi());
+                        pstInsertar_Comision.setDouble(9, comi.getValor_canon());
+                        pstInsertar_Comision.setDouble(10, comi.getValor_propietario());
+
+                        //y tambien se realiza el INSERT correspondiente despues de llenar los datos, con el metodo executeUpdate()
+                        pstInsertar_Comision.executeUpdate();
+
+                    }
+
+                    connect.commit();
+                
+                }catch (SQLException e){
+                    connect.rollback();
+
+                    System.out.println("ERROR en consulta SQL.");
+                    System.out.println("SQLException: " + e.getMessage());
+                    System.out.println("SQLState: " + e.getSQLState());
+                    System.out.println("VendorError: " + e.getErrorCode());
+                }
+                finally
+                {
+                  try
+                  {
+                     connect.setAutoCommit(true);
+                     connect.close();
+                  }
+                   catch (SQLException e) { 
+
+                   }
+                }
             }
         } catch (ClassNotFoundException | SQLException ex) {
             try {
@@ -274,5 +286,17 @@ public class DaoComisionImpl implements DaoComision<Comision> {
         }
 
         return false;
-    }   
+    } 
+     
+     public boolean existeLiqPeriodo(int periodo) throws SQLException, ClassNotFoundException {
+        Connection connect = JdbcConnect.getConnect();
+        PreparedStatement pst = connect.prepareStatement("Select periodo_comi from comision where periodo_comi=?");
+        pst.setInt(1,periodo);
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            return true;
+        }
+
+        return false;
+    }
 }

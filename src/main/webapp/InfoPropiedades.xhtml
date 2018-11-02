@@ -19,11 +19,12 @@
            
              
        <h:form>
+           
            <p:messages id="messages" showDetail="true" closable="true">
                 
             </p:messages>
 
-            <p:panel header="Listado Propiedades">
+            <p:panel header="Informe Propiedades">
                 
                 <h:commandLink>
                     <h:graphicImage url="resources/imagenes/PDF.png" width="24"/>
@@ -36,7 +37,7 @@
                 </h:commandLink>
                 
           
-                  <p:dataTable  paginator="true" rows="10" emptyMessage="No hay propiedades creadas" id="tabla" value="#{propiedadBean.lista}" var="item">
+                <p:dataTable  paginator="true" rows="10" emptyMessage="No hay informes creados" id="tabla" value="#{propiedadBean.listainfo}" var="item">
                     
                    
                     <p:column filterBy="#{item.tipo}" headerText="Tipo">

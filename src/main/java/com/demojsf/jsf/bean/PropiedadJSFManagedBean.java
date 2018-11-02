@@ -22,12 +22,21 @@ public class PropiedadJSFManagedBean implements Serializable {
 
     private Propiedad propiedad = new Propiedad();
     private List<Propiedad> lista = new ArrayList<>();
+    private List<Propiedad> listainfo = new ArrayList<>();
     private DaoPropiedades dao = new DaoPropiedadImpl();
     private boolean modoInsert = false;
     private boolean modoEdit = true;
     private ChartSeries PropiedData;
     private BarChartModel barModel;
     private double valorMax = 0;
+
+    public List<Propiedad> getListainfo() {
+        return listainfo;
+    }
+
+    public void setListainfo(List<Propiedad> listainfo) {
+        this.listainfo = listainfo;
+    }
     
     public boolean isModoInsert() {
         return modoInsert;
@@ -51,6 +60,7 @@ public class PropiedadJSFManagedBean implements Serializable {
 
     @PostConstruct
     public void iniciar() {
+        listainfo = dao.getListado();
         lista = dao.getPropiedad();
         propiedad.setIdpropiedad(lista.size() + 1);
         createBarModel();
@@ -114,7 +124,7 @@ public class PropiedadJSFManagedBean implements Serializable {
         PropiedData = new ChartSeries();
         PropiedData.setLabel("valor");
         valorMax = 0;
-        for (Propiedad cData: lista){
+        for (Propiedad cData: listainfo){
             if(cData.getValor() > valorMax ){
                 valorMax = cData.getValor();
             }

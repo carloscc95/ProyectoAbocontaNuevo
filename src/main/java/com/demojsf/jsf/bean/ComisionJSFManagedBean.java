@@ -13,6 +13,10 @@ import com.demojsf.model.Propiedad;
 import com.demojsf.dao.DaoComision;
 import java.sql.SQLException;
 import java.util.Date;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 
 @Named(value = "comisionBean")
 @ViewScoped
@@ -22,12 +26,16 @@ public class ComisionJSFManagedBean implements Serializable {
     private Comision comision = new Comision();
     private List<Comision> lista = new ArrayList<>();
     //private ListCargar<Comision> lista = new ArrayList<>();
+    private List<Comision> listaInforme = new ArrayList<>();
     private DaoComisionImpl dao = new DaoComisionImpl();
     private boolean modoInsert = false;
     private boolean modoEdit = true;
+    private ChartSeries ComiData;
+    private BarChartModel barModel;
+    private double valorMax = 0;
     
     //Variable De periodo de la vista
-    private int periodo= new Date().getMonth();
+    private int periodo= new Date().getMonth()+1;
 
     public int getPeriodo() {
         return periodo;
@@ -59,10 +67,23 @@ public class ComisionJSFManagedBean implements Serializable {
         this.comision = comision;
     }
 
+    public List<Comision> getListaInforme() {
+        return listaInforme;
+    }
+
+    public void setListaInforme(List<Comision> listaInforme) {
+        this.listaInforme = listaInforme;
+    }
+    
+    
+
     @PostConstruct
     public void iniciar() {
-        //lista = dao.getComision();
-        //comision.setIdcomision(lista.size() + 1);
+        //dao.liq_comision(periodo);
+        lista = dao.getComision(periodo);
+        listaInforme = dao.getListado(periodo);
+        createBarModel();
+       
     }
 
     public List<Comision> getLista() {
@@ -96,7 +117,7 @@ public class ComisionJSFManagedBean implements Serializable {
         dao.liq_comision(periodo);
         
         //dao.save(comision);
-        lista = dao.getComision();
+        lista = dao.getComision(periodo);
         comision = new Comision();
         //comision.setIdcomision(lista.size() + 1);
     }
@@ -104,7 +125,7 @@ public class ComisionJSFManagedBean implements Serializable {
     public void delete() {
 
         dao.delete(comision);
-        lista = dao.getComision();
+        lista = dao.getComision(periodo);
         comision = new Comision();
         comision.setIdcomision(lista.size() + 1);
         modoEdit = true;
@@ -114,7 +135,7 @@ public class ComisionJSFManagedBean implements Serializable {
     public void update() {
 
         dao.update(comision);
-        lista = dao.getComision();
+        lista = dao.getComision(periodo);
         comision = new Comision();
         comision.setIdcomision(lista.size() + 1);
         modoEdit = true;
@@ -125,4 +146,52 @@ public class ComisionJSFManagedBean implements Serializable {
         modoEdit = false;
         modoInsert = true;
     }
+    
+    public BarChartModel getBarModel(){
+        return barModel;
+    }
+    
+    private BarChartModel initBarModel(){
+        BarChartModel model = new BarChartModel();
+        
+        ComiData = new ChartSeries();
+        ComiData.setLabel("Valor Comision");
+        valorMax = 0;
+        for (Comision cData: listaInforme){
+            if(cData.getValor_comi() > valorMax ){
+                valorMax = cData.getValor_comi();
+            }
+            ComiData.set(cData.getPeriodo_comi(), cData.getValor_comi());
+        }
+        
+        if(valorMax==0){ 
+            ComiData.set(0, 0);
+        }
+        
+        model.addSeries(ComiData);
+        
+        return model;
+               
+    }
+    
+    private void createBarModel(){
+        barModel = initBarModel();
+        
+        barModel.setTitle("Valor de comisiones por mes");
+        barModel.setLegendPosition("ne");
+        
+        Axis xAxis = barModel.getAxis(AxisType.X);
+        xAxis.setLabel("Mes");
+        
+        Axis yAxis = barModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Valor Comision");
+        yAxis.setMin(0);
+        yAxis.setMax(valorMax);
+        
+        
+        
+    }
+    
+    
+    
 }

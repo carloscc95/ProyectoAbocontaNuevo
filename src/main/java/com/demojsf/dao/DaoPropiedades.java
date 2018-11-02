@@ -8,4 +8,7 @@ public interface DaoPropiedades<Propiedad> {
     void update(Propiedad p);
     void delete(Propiedad p);
     List<Propiedad> getPropiedad();
+    List<Propiedad> getListado();
+    
+    
 }

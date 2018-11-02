@@ -16,6 +16,26 @@ import java.util.Date;
     private double valor_comi;
     private double valor_canon;
     private double valor_propietario;
+    private String NombrePropiedad;
+    private String NombrePropietario;
+
+    public String getNombrePropiedad() {
+        return NombrePropiedad;
+    }
+
+    public void setNombrePropiedad(String NombrePropiedad) {
+        this.NombrePropiedad = NombrePropiedad;
+    }
+
+    public String getNombrePropietario() {
+        return NombrePropietario;
+    }
+
+    public void setNombrePropietario(String NombrePropietario) {
+        this.NombrePropietario = NombrePropietario;
+    }
+    
+    
 
     public int getIdcomision() {
         return idcomision;

@@ -14,33 +14,19 @@
                 padding-left: 50px;
             }
         </style>
-       
        <h:form>
             <p:messages id="messages" showDetail="true" closable="true">
                 
             </p:messages>
-            <p:panel header="Liquidación de Comisiones">
-                <p:panelGrid columns="3" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
-                    <p:outputLabel for="periodo_comi">Periodo a Liquidar</p:outputLabel>
-                    <p:inputText id="periodo_comi" placeholder="Periodo a liquidar" value="#{comisionBean.periodo}" ></p:inputText>
-                    <p:commandButton title="Liquidar" disabled="#{comisionBean.modoInsert}" icon="fa fa-flash Fs16 white" update="tabla,@form" id="btnLiquidar" actionListener="#{comisionBean.save()}" ></p:commandButton>
-                
-                    
-                    
-                    <p:commandButton title="Eliminar" disabled="#{contratoBean.modoEdit}"  icon="fa fa-trash Fs16 white" update="tabla,@form" id="bntDelete" actionListener="#{comisionBean.delete()}">
-                         <p:confirm header="Confirmacion" message="Realmente desea eliminar?" icon="ui-icon-alert" />
-                    </p:commandButton>
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" actionListener="#{comisionBean.delete()}"  icon="ui-icon-check" />
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
-                                 
-                    
-                    
-                    
-                    
-                </p:panelGrid>    
-            </p:panel>
+           
+           <p:panel header="Liquidacion de comision">
+               <p:panelGrid columns="3" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
+                   <p:outputLabel for="periodo_comi">Periodo a Liquidar</p:outputLabel>
+                   <p:inputText id="periodo_comi" placeholder="Periodo a Liquidar" value="#{comisionBean.periodo}" ></p:inputText>
+                   <p:commandButton title="Liquidar" icon="fa fa-flash Fs16 white" update="tabla,@form" id="btnLiquidar" actionListener="#{comisionBean.save()}" ></p:commandButton>
+               </p:panelGrid>
+
+           </p:panel>  
                                  
             <p:panel header="Listado de Comision">
                 
@@ -56,42 +42,39 @@
                 
                 <p:dataTable  paginator="true" rows="10" emptyMessage="No hay comisiones creadas" id="tabla" value="#{comisionBean.lista}" var="item">
                     
-                    <p:column headerText="idcomision">
-                        <h:outputText value="#{item.idcomision}"></h:outputText>
-                    </p:column>
-                    <p:column headerText="fecha_reg">
+                    <p:column headerText="Fecha Registro">
                         <h:outputText value="#{item.fecha_reg}"></h:outputText>
                     </p:column>
-                    <p:column filterBy="#{item.periodo_comi}" headerText="periodo_comi">
+                    <p:column headerText="Periodo Comision">
                         <h:outputText value="#{item.periodo_comi}"></h:outputText>
                     </p:column>
-                    <p:column headerText="idcontrato">
+                    <p:column filterBy="#{item.idcontrato}" headerText="Contrato">
                         <h:outputText value="#{item.idcontrato}" ></h:outputText>
                     </p:column>
-                    <p:column headerText="idpropiedad">
-                        <h:outputText value="#{item.idpropiedad}" ></h:outputText>
+                    <p:column filterBy="#{item.idpropiedad}" headerText="Propiedad">
+                        <h:outputText value="#{item.nombrePropiedad}" ></h:outputText>
                     </p:column>
-                    <p:column headerText="idpropietario">
-                        <h:outputText value="#{item.idpropietario}" ></h:outputText>
+                    <p:column filterBy="#{item.idpropietario}" headerText="Propietario">
+                        <h:outputText value="#{item.nombrePropietario}" ></h:outputText>
                     </p:column>
-                    <p:column headerText="observacion">
+                    <p:column headerText="Observacion">
                         <h:outputText value="#{item.observacion}" ></h:outputText>
                     </p:column>
-                    <p:column headerText="porc_comi">
+                    <p:column headerText="Porcentaje Comision">
                         <h:outputText value="#{item.porc_comi}" ></h:outputText>
                     </p:column>
-                    <p:column headerText="valor_comi">
-                        <h:outputText value="#{item.valor_comi}" ></h:outputText>
-                    </p:column>
-                    <p:column headerText="valor_canon">
+                    <p:column headerText="Valor Canon">
                         <h:outputText value="#{item.valor_canon}" ></h:outputText>
                     </p:column>
-                    <p:column headerText="valor_propietario">
+                    <p:column headerText="Valor Comision">
+                        <h:outputText value="#{item.valor_comi}" ></h:outputText>
+                    </p:column>
+                    <p:column headerText="Valor Propietario">
                         <h:outputText value="#{item.valor_propietario}" ></h:outputText>
                     </p:column>
                                    
-                    
-                    
+                   
+                   
                 </p:dataTable>
             </p:panel>
         </h:form>

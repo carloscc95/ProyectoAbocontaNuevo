@@ -14,5 +14,8 @@ public interface DaoComision<Comision> {
     void save(Comision c);
     void update(Comision c);
     void delete(Comision c);
-    List<Comision> getComision();
+    List<Comision> getComision(int periodo);
+    List<Comision> getListado(int periodo);
+    
+   
 }

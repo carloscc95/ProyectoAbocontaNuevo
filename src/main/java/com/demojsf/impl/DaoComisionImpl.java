@@ -20,41 +20,28 @@ import javax.faces.context.FacesContext;
 
 public class DaoComisionImpl implements DaoComision<Comision> {
 
+    
     @Override
     public void liq_comision(int periodo){
      
         Connection connect = null;
         try {
-            
-            boolean continuar=true;
+          
             
             connect = JdbcConnect.getConnect();
             
             
             Comision comi = new Comision();
              
-            if (existeLiqPeriodo(periodo)){// Aqui es donde vas a preguntar la validacion que te dice carlos
-                
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existente!", "Periodo ya liquidado...."));
-                
-                //aqui vas a lanzar pregunta si desea continuar, preguntale a carlos como se lanza el mensaje que el ya sabe
-                
-                //aqui haces condicional, preguntas si colocaron continuar o no
-                //si colocan continuar 
-                /*
-                if(mesaje==NoContinuar){//ojo aqui no va esto... solo que lo puse pa que sepas que alli dentro tienes que preguntar lo que coloquen en el mensaje emergente
-                    continuar=false;
-                }
-                */
-            //ya solo eso... creo que no se necesita mas....
+            if (existeLiqPeriodo(periodo)){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Liquidacion Existente!", "Se realizo proceso de Re-Liquidacion..."));
+                PreparedStatement pst = connect.prepareStatement("Delete from Comision where periodo_comi=?");
+            
+                pst.setInt(1, periodo);
 
-              
+                pst.executeUpdate();
+
             }
-            
-            if(continuar){
-            
-            
-                
 
                 //Buscamos los contratos activos 
                 PreparedStatement pstContratos = connect.prepareStatement("SELECT c.numcontrato, c.idpropied, pt.idpropietario, pt.porccomi, c.valor "
@@ -125,7 +112,7 @@ public class DaoComisionImpl implements DaoComision<Comision> {
 
                    }
                 }
-            }
+            
         } catch (ClassNotFoundException | SQLException ex) {
             try {
                 if (connect != null) {
@@ -229,7 +216,7 @@ public class DaoComisionImpl implements DaoComision<Comision> {
             connect = JdbcConnect.getConnect();
             int periodo = 0;
 
-            PreparedStatement pst = connect.prepareStatement("Delete from Comision where periodo_comi = '" + periodo + "'");
+            PreparedStatement pst = connect.prepareStatement("Delete from Comision where periodo_comi = " + periodo );
             
             pst.setInt(1, c.getPeriodo_comi());
             
@@ -249,12 +236,17 @@ public class DaoComisionImpl implements DaoComision<Comision> {
     }
     
     @Override
-    public List<Comision> getComision() {
+    public List<Comision> getComision(int periodo) {
         List<Comision> lista = new ArrayList<>();
         try {
             Connection connect = JdbcConnect.getConnect();
             PreparedStatement pst = connect.
-                    prepareStatement("Select * from Comision order by 1");
+                    prepareStatement("Select c.idcomision, c.fecha_reg, c.periodo_comi, c.idcontrato, c.idpropiedad, pd.nombre, c.idpropietario, pt.nombre, c.observacion, "
+                            + "c.porc_comi, c.valor_comi, c.valor_canon, c.valor_propietario "
+                            + "from Comision c "
+                            + "inner join propiedad pd on pd.idpropiedad = c.idpropiedad "
+                            + "inner join propietarios pt on pt.idpropietario = c.idpropietario "
+                            + "where periodo_comi = " + periodo + " order by 1");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Comision c = new Comision();
@@ -263,12 +255,14 @@ public class DaoComisionImpl implements DaoComision<Comision> {
                 c.setPeriodo_comi(rs.getInt(3));
                 c.setIdcontrato(rs.getInt(4));
                 c.setIdpropiedad(rs.getInt(5));
-                c.setIdpropietario(rs.getInt(6));
-                c.setObservacion(rs.getString(7));
-                c.setPorc_comi(rs.getInt(8));
-                c.setValor_comi(rs.getDouble(9));
-                c.setValor_canon(rs.getDouble(10));
-                c.setValor_propietario(rs.getDouble(11));
+                c.setNombrePropiedad(rs.getString(6));
+                c.setIdpropietario(rs.getInt(7));
+                c.setNombrePropietario(rs.getString(8));
+                c.setObservacion(rs.getString(9));
+                c.setPorc_comi(rs.getInt(10));
+                c.setValor_comi(rs.getDouble(11));
+                c.setValor_canon(rs.getDouble(12));
+                c.setValor_propietario(rs.getDouble(13));
                 lista.add(c);
             }
         } catch (ClassNotFoundException | SQLException ex) {
@@ -276,6 +270,34 @@ public class DaoComisionImpl implements DaoComision<Comision> {
         }
         return lista;
     }
+    
+    
+    
+    @Override
+    public List<Comision> getListado(int periodo) {
+        List<Comision> listaInforme = new ArrayList<>();
+        try {
+            Connection connect = JdbcConnect.getConnect();
+            PreparedStatement pst = connect.
+                    prepareStatement("Select c.periodo_comi, sum(c.valor_comi) as valor_comi "
+                            + "from Comision c group by 1 order by 1");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Comision c = new Comision();
+                c.setPeriodo_comi(rs.getInt(1));
+                c.setValor_comi(rs.getDouble(2));
+
+                listaInforme.add(c);
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(DaoComisionImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaInforme;
+    }
+    
+    
+    
+   
     
      public boolean existe(Comision c) throws SQLException, ClassNotFoundException {
 

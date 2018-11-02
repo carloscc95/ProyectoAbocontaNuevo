@@ -19,11 +19,12 @@
            
              
        <h:form>
+           
            <p:messages id="messages" showDetail="true" closable="true">
                 
             </p:messages>
 
-            <p:panel header="Listado de Propietarios">
+            <p:panel header="Informe comision por mes">
                 
                 <h:commandLink>
                     <h:graphicImage url="resources/imagenes/PDF.png" width="24"/>
@@ -36,20 +37,20 @@
                 </h:commandLink>
                 
           
-                <p:dataTable  paginator="true" rows="10" emptyMessage="No hay propietarios creados" id="tabla" value="#{propietarioBean.lista}" var="item">
+                <p:dataTable  paginator="true" rows="10" emptyMessage="No hay informes creados" id="tabla" value="#{comisionBean.listaInforme}" var="item">
                     
                     <h:commandLink>
                         <h:graphicImage url="./../resources/FONDOS/pdf.png"/>
                         <p:dataExporter type="pdf" target="tabla" fileName="PdfPropietario"/>    
                     </h:commandLink>
-                    <p:column  filterBy="#{item.nombre}" headerText="Nombre">
-                        <h:outputText value="#{item.nombre}"></h:outputText>
+                    <p:column   headerText="Periodo">
+                        <h:outputText value="#{item.periodo_comi}"></h:outputText>
                     </p:column>
-                    <p:column headerText="%Comision">
-                        <h:outputText value="#{item.porccomi}" ></h:outputText>
+                    <p:column headerText="Valor Comision">
+                        <h:outputText value="#{item.valor_comi}" ></h:outputText>
                     </p:column>                     
                 </p:dataTable>
-                <p:chart type="bar" model="#{propietarioBean.barModel}" style="height:300px"/>          
+                <p:chart type="bar" model="#{comisionBean.barModel}" style="height:300px"/>          
             </p:panel>
         </h:form>
     </ui:define>

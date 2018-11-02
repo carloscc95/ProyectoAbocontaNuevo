@@ -152,6 +152,7 @@ public class DaoPropiedadImpl implements DaoPropiedades<Propiedad> {
                             + " FROM propiedad pd "
                             + " inner join propietarios pt on pd.idpropietario = pt.idpropietario "
                             + " order by 1");
+       
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Propiedad p = new Propiedad();
@@ -182,6 +183,32 @@ public class DaoPropiedadImpl implements DaoPropiedades<Propiedad> {
         return lista;
     }
     
+    
+    @Override
+    public List<Propiedad> getListado() {
+        List<Propiedad> listainfo = new ArrayList<>();
+        try {
+            Connection connect = JdbcConnect.getConnect();
+            PreparedStatement pst = connect.
+                    prepareStatement("SELECT pd.tipo, sum(pd.valor) as  valor "
+                            + " FROM propiedad pd group by 1 order by 1");
+       
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Propiedad p = new Propiedad();               
+                p.setTipo(rs.getString(1));
+                p.setValor(rs.getDouble(2));
+
+                listainfo.add(p);
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(DaoPropiedadImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listainfo;
+    }
+    
+
+    
      public boolean existe(Propiedad p) throws SQLException, ClassNotFoundException {
 
         Connection connect = JdbcConnect.getConnect();
@@ -194,4 +221,6 @@ public class DaoPropiedadImpl implements DaoPropiedades<Propiedad> {
 
         return false;
     }
+     
+     
 }

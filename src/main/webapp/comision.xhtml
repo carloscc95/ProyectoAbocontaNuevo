@@ -22,20 +22,19 @@
             <p:panel header="Liquidación de Comisiones">
                 <p:panelGrid columns="3" layout="grid" style="border:0px !important; background:none;" styleClass="ui-panelgrid-blank">
                     <p:outputLabel for="periodo_comi">Periodo a Liquidar</p:outputLabel>
-                    <p:inputText id="periodo_comi" placeholder="Periodo a liquidar" value="#{comisionBean.comision.periodo_comi}" ></p:inputText>
-                    <p:commandButton title="Liquidar" icon="fa fa-flash Fs16 white" update="tabla,@form" id="btnLiquidar" actionListener="#{comisionBean.Liq_comision()}" ></p:commandButton>
+                    <p:inputText id="periodo_comi" placeholder="Periodo a liquidar" value="#{comisionBean.periodo}" ></p:inputText>
+                    <p:commandButton title="Liquidar" disabled="#{comisionBean.modoInsert}" icon="fa fa-flash Fs16 white" update="tabla,@form" id="btnLiquidar" actionListener="#{comisionBean.save()}" ></p:commandButton>
                 
-                    <p:outputLabel for="cargar_periodo_comi">Cargar Periodos</p:outputLabel>
-                    <p:inputText id="cargar_periodo_comi" placeholder="Cargar Periodos" value="#{comisionBean.periodo}" ></p:inputText>
-                    <p:commandButton title="CargarLiquidar" icon="fa fa-flash Fs16 white" update="tabla,@form" id="btnLiquidar" actionListener="#{comisionBean.liquidar()}" ></p:commandButton>
                     
-                    <p:commandButton title="Eliminar" icon="fa fa-trash Fs16 white" update="tabla,@form" id="bntDelete" actionListener="#{comisionBean.delete()}">
+                    
+                    <p:commandButton title="Eliminar" disabled="#{contratoBean.modoEdit}"  icon="fa fa-trash Fs16 white" update="tabla,@form" id="bntDelete" actionListener="#{comisionBean.delete()}">
                          <p:confirm header="Confirmacion" message="Realmente desea eliminar?" icon="ui-icon-alert" />
                     </p:commandButton>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" actionListener="#{comisionBean.delete()}"  icon="ui-icon-check" />
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>            
+                    </p:confirmDialog>
+                                 
                     
                     
                     
@@ -91,10 +90,7 @@
                         <h:outputText value="#{item.valor_propietario}" ></h:outputText>
                     </p:column>
                                    
-                    <p:column exportable="false" style="width:100px;text-align: center" headerText="Cargar comisiones">
-                        <p:commandButton update="@form" process="@this" actionListener="#{comisionBean.changeMode()}" icon="fa fa-eye Fs16 white" title="View">
-                            <f:setPropertyActionListener value="#{item}" target="#{comisionBean.comision}" />
-                        </p:commandButton>
+                    
                     
                 </p:dataTable>
             </p:panel>

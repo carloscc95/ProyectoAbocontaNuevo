@@ -2,7 +2,7 @@
 package com.demojsf.jsf.bean;
 
 import com.demojsf.impl.DaoConceptoImpl;
-import com.demojsf.model.Concepto;
+import com.demojsf.pojos.Concepto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import com.demojsf.jpa.control.ConceptoJpaController;
 public class ConceptoJSFManagedBean implements Serializable {
 
 
-    private Concepto concepto = new Concepto();
+    private Concepto concepto = new Concepto(); 
     private List<Concepto> lista = new ArrayList<>();
     private DaoConceptoImpl dao = new DaoConceptoImpl();
     //private ConceptoJpaController dao2 = new ConceptoJpaController();
@@ -43,10 +43,16 @@ public class ConceptoJSFManagedBean implements Serializable {
         this.modoEdit = modoEdit;
     }
 
+    public Concepto getConcepto() {
+        return concepto;
+    }
+
     public void setConcepto(Concepto concepto) {
         this.concepto = concepto;
     }
 
+       
+    
     @PostConstruct
     public void iniciar() {
         lista = dao.getConcepto();
@@ -59,10 +65,6 @@ public class ConceptoJSFManagedBean implements Serializable {
 
     public void setLista(List<Concepto> lista) {
         this.lista = lista;
-    }
-
-    public Concepto getConcepto() {
-        return concepto;
     }
 
     public ConceptoJSFManagedBean() {
